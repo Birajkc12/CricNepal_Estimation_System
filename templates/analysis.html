@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Player Performance Analysis - CricNepal Estimation System</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        background-color: #f8f9fa;
+        padding-top: 50px;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .table-container {
+        margin-top: 30px;
+      }
+      .chart-container {
+        margin-top: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Player Performance Analysis</h1>
+
+      <form action="/analysis" method="POST">
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            name="search_query"
+            id="searchInput"
+            placeholder="Search players"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
+
+      <div class="table-container">
+        <h2>Players</h2>
+        <div class="row" id="playersContainer">
+          {% for player in players %}
+          <div class="col-md-4 player-card">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{ player.Player }}</h5>
+                <p class="card-text">Matches: {{ player.Matches }}</p>
+                <p class="card-text">Innings: {{ player.Innings }}</p>
+                <p class="card-text">Runs: {{ player.Runs }}</p>
+                <p class="card-text">Wickets: {{ player.Wickets }}</p>
+                <p class="card-text">
+                  Batting Average: {{ player.Batting_Average }}
+                </p>
+                <p class="card-text">
+                  Bowling Average: {{ player.Bowling_Average }}
+                </p>
+                <p class="card-text">Strike Rate: {{ player.Strike_Rate }}</p>
+                <p class="card-text">Economy Rate: {{ player.Economy_Rate }}</p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <h2>Players with Above-Average Batting Average</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Batting Average</th>
+              <th>Batting Strike Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for player in above_average_batting %}
+            <tr>
+              <td>{{ player.Player }}</td>
+              <td>{{ player.Batting_Average }}</td>
+              <td>{{ player.Strike_Rate }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <h2>Players with Above-Average Bowling Average</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Bowling Average</th>
+              <th>Bowling Strike Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for player in above_average_bowling %}
+            <tr>
+              <td>{{ player.Player }}</td>
+              <td>{{ player.Bowling_Average }}</td>
+              <td>{{ player.Economy_Rate }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="chart-container">
+        <h2>Batting Average Distribution</h2>
+        <canvas id="battingChart"></canvas>
+
+        <h2>Bowling Average Distribution</h2>
+        <canvas id="bowlingChart"></canvas>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // Function to filter players based on search query
+      function filterPlayers() {
+        var input, filter, playersContainer, playerCards, player, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        playersContainer = document.getElementById("playersContainer");
+        playerCards = playersContainer.getElementsByClassName("player-card");
+
+        // Loop through all player cards, hide those that don't match the search query
+        for (i = 0; i < playerCards.length; i++) {
+          player = playerCards[i];
+          txtValue = player.textContent || player.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            player.style.display = "";
+          } else {
+            player.style.display = "none";
+          }
+        }
+      }
+
+      // Event listener to trigger filterPlayers() function on search input change
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", filterPlayers);
+
+      // Chart.js configuration
+      var battingData = {
+        labels: [{% for player in players %}"{{ player.Player }}",{% endfor %}],
+        datasets: [
+          {
+            label: "Batting Average",
+            data: [
+              {% for player in players %}{{ player.Batting_Average }},{% endfor %}
+            ],
+            backgroundColor: "rgba(54, 162, 235, 0.5)",
+            borderColor: "rgba(54, 162, 235, 1)",
+            borderWidth: 1,
+          },
+        ],
+      };
+
+      var bowlingData = {
+        labels: [{% for player in players %}"{{ player.Player }}",{% endfor %}],
+        datasets: [
+          {
+            label: "Bowling Average",
+            data: [
+              {% for player in players %}{{ player.Bowling_Average }},{% endfor %}
+            ],
+            backgroundColor: "rgba(255, 99, 132, 0.5)",
+            borderColor: "rgba(255, 99, 132, 1)",
+            borderWidth: 1,
+          },
+        ],
+      };
+
+      var battingChart = new Chart(document.getElementById("battingChart"), {
+        type: "bar",
+        data: battingData,
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: "Batting Average",
+              },
+            },
+            x: {
+              title: {
+                display: true,
+                text: "Player",
+              },
+            },
+          },
+        },
+      });
+
+      var bowlingChart = new Chart(document.getElementById("bowlingChart"), {
+        type: "bar",
+        data: bowlingData,
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: "Bowling Average",
+              },
+            },
+            x: {
+              title: {
+                display: true,
+                text: "Player",
+              },
+            },
+          },
+        },
+      });
+    </script>
+
+    <script>
+      var ctx = document.getElementById("battingChart").getContext("2d");
+      var chart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: [{% for player in players %}"{{ player.Player }}",{% endfor %}],
+          datasets: [
+            {
+              label: "Batting Average",
+              data: [
+                {% for player in players %}{{ player.Batting_Average }},{% endfor %}
+              ],
+              backgroundColor: "rgba(54, 162, 235, 0.5)",
+              borderColor: "rgba(54, 162, 235, 1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: "Batting Average",
+              },
+            },
+            x: {
+              title: {
+                display: true,
+                text: "Player",
+              },
+            },
+          },
+        },
+      });
+
+      var ctx2 = document.getElementById("bowlingChart").getContext("2d");
+      var chart2 = new Chart(ctx2, {
+        type: "bar",
+        data: {
+          labels: [{% for player in players %}"{{ player.Player }}",{% endfor %}],
+          datasets: [
+            {
+              label: "Bowling Average",
+              data: [
+                {% for player in players %}{{ player.Bowling_Average }},{% endfor %}
+              ],
+              backgroundColor: "rgba(255, 99, 132, 0.5)",
+              borderColor: "rgba(255, 99, 132, 1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: "Bowling Average",
+              },
+            },
+            x: {
+              title: {
+                display: true,
+                text: "Player",
+              },
+            },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
