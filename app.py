@@ -1,13 +1,17 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 import pandas as pd
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
+import os
 
-app = Flask(__name__, template_folder="templates")
+app = Flask(__name__)
 
 # Load the dataset
 data = pd.read_csv("player_performance.csv")
+
+data["Image"] = data["Player"].str.replace(" ", "_") + ".jpg"
+
 
 # Calculate additional metrics
 data["Above_Avg_Batting"] = data["Batting_Average"] > data["Batting_Average"].mean()
@@ -94,6 +98,8 @@ def analysis():
         bowling_chart_data=bowling_chart_data,
     )
 
+
+# ...
 
 if __name__ == "__main__":
     app.run(debug=True)

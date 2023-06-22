@@ -51,12 +51,6 @@
           <div class="col-md-4 player-card">
             <div class="card">
               <div class="card-body">
-                <img
-                  src="{{ url_for('static', filename='player_images/' ~ player['Image']) }}"
-                  alt="{{ player['Player'] }} Image"
-                  class="card-img-top"
-                />
-
                 <h5 class="card-title">{{ player.Player }}</h5>
                 <p class="card-text">Matches: {{ player.Matches }}</p>
                 <p class="card-text">Innings: {{ player.Innings }}</p>
