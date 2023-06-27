@@ -4,8 +4,12 @@ import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 import os
+from playerprofile import get_player_stats
+from flask import Flask, session, redirect
+
 
 app = Flask(__name__)
+app.secret_key = "your_secret_key"
 
 # Load the dataset
 data = pd.read_csv("player_performance.csv")
@@ -97,6 +101,41 @@ def analysis():
         batting_chart_data=batting_chart_data,
         bowling_chart_data=bowling_chart_data,
     )
+
+
+@app.route("/player/<player_name>")
+def player(player_name):
+    # Retrieve the player's stats based on the player_name parameter
+    player = get_player_stats(player_name)
+
+    # Render the player.html template with the player's stats
+    return render_template("player.html", player=player)
+
+
+@app.route("/admin/login", methods=["GET", "POST"])
+def admin_login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        # Perform authentication logic here (e.g., validate username and password)
+        # You can use a database or store admin credentials in a secure manner
+
+        # If authentication is successful, store the admin's session
+        session["admin"] = True
+        return redirect("/admin")
+
+    return render_template("admin_login.html")
+
+
+@app.route("/admin")
+def admin_panel():
+    # Check if the admin is logged in
+    if not session.get("admin"):
+        return redirect("/admin/login")
+
+    # Render the admin panel HTML template
+    return render_template("admin_panel.html")
 
 
 # ...

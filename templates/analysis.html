@@ -29,6 +29,35 @@
   </head>
   <body>
     <div class="container">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container">
+          <a class="navbar-brand" href="/">Home</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="#about">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#ranking">ICC Ranking</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#analysis">Analysis</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
       <h1>Player Performance Analysis</h1>
 
       <form action="/analysis" method="POST">
@@ -49,29 +78,17 @@
         <div class="row" id="playersContainer">
           {% for player in players %}
           <div class="col-md-4 player-card">
-            <div class="card">
+            <!-- Replace the existing player card code -->
+            <a href="/player/{{ player.Player }}" class="card">
               <div class="card-body">
                 <img
                   src="{{ url_for('static', filename='player_images/' ~ player['Image']) }}"
                   alt="{{ player['Player'] }} Image"
                   class="card-img-top"
                 />
-
                 <h5 class="card-title">{{ player.Player }}</h5>
-                <p class="card-text">Matches: {{ player.Matches }}</p>
-                <p class="card-text">Innings: {{ player.Innings }}</p>
-                <p class="card-text">Runs: {{ player.Runs }}</p>
-                <p class="card-text">Wickets: {{ player.Wickets }}</p>
-                <p class="card-text">
-                  Batting Average: {{ player.Batting_Average }}
-                </p>
-                <p class="card-text">
-                  Bowling Average: {{ player.Bowling_Average }}
-                </p>
-                <p class="card-text">Strike Rate: {{ player.Strike_Rate }}</p>
-                <p class="card-text">Economy Rate: {{ player.Economy_Rate }}</p>
               </div>
-            </div>
+            </a>
           </div>
           {% endfor %}
         </div>
@@ -305,6 +322,36 @@
           },
         },
       });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // Function to filter players based on search query
+      function filterPlayers() {
+        var input, filter, playersContainer, playerCards, player, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        playersContainer = document.getElementById("playersContainer");
+        playerCards = playersContainer.getElementsByClassName("player-card");
+
+        // Loop through all player cards, hide those that don't match the search query
+        for (i = 0; i < playerCards.length; i++) {
+          player = playerCards[i];
+          txtValue = player.textContent || player.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            player.style.display = "";
+          } else {
+            player.style.display = "none";
+          }
+        }
+      }
+
+      // Event listener to trigger filterPlayers() function on search input change
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", filterPlayers);
+
+      // Rest of your JavaScript code...
+      // ...
     </script>
   </body>
 </html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin Panel</title>
+  </head>
+  <body>
+    <h1>Admin Panel</h1>
+
+    <h2>Add Player</h2>
+    <form method="POST" action="/admin/add_player">
+      <!-- Player attribute fields here -->
+      <input type="submit" value="Add Player" />
+    </form>
+
+    <h2>Update Player</h2>
+    <form method="POST" action="/admin/update_player">
+      <select name="player_id">
+        <!-- Populate the dropdown with existing player IDs -->
+        <!-- Each option value should correspond to the player's ID -->
+      </select>
+      <!-- Player attribute fields here -->
+      <input type="submit" value="Update Player" />
+    </form>
+  </body>
+</html>
