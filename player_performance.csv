@@ -1,19 +1,18 @@
-Player,Matches,Innings,Runs,Wickets,Batting_Average,Bowling_Average,Strike_Rate,Economy_Rate
-Paras Khadka,100,95,3000,50,35.5,28.6,75.2,4.2
-Sandeep Lamichhane,50,25,100,80,12.5,18.2,87.5,6.5
-Gyanendra Malla,120,115,2800,10,26.9,40.2,65.8,5.1
-Sharad Vesawkar,90,85,1800,20,22.1,34.8,70.3,4.8
-Dipendra Singh Airee,60,55,1400,15,32.8,26.7,80.6,4.3
-Aarif Sheikh,70,65,1200,5,18.5,42.1,63.9,5.2
-Sompal Kami,80,60,800,40,14.3,22.4,78.9,5.9
-Binod Bhandari,50,40,900,2,25,56.3,68.7,5.4
-Karan KC,40,30,400,30,13.3,18.7,85.2,5.8
-Basanta Regmi,100,80,500,70,10.2,15.5,60.3,4.5
-Sushan Bhari,70,55,1800,5,28.7,47.2,72.1,5.6
-Rohit Kumar Paudel,50,45,1100,8,24.4,38.2,63.7,4.9
-Kushal Bhurtel,30,30,900,5,30,35.6,80.5,4.5
-Sandeep Jora,45,40,800,10,22.7,32.5,67.9,5.2
-Kushal Malla,20,18,600,12,33.3,21.8,77.3,5.8
-Karan KC,40,35,700,25,21.2,18.6,68.5,5.4
-Avinash Bohara,35,25,200,40,8.9,20.5,55.6,4.9
-Lalit Rajbanshi,30,20,100,30,5,15.2,42.3,5.7
+Player,Matches,Innings,Runs,Wickets,Batting_Average,Bowling_Average,Strike_Rate,Economy_Rate,Image,Above_Avg_Batting,Above_Avg_Bowling
+Paras Khadka,100,95,3000,50.0,35.5,28.6,75.2,4.2,Paras_Khadka.jpg,True,False
+Sandeep Lamichhane,50,25,100,80.0,12.5,18.2,87.5,6.5,Sandeep_Lamichhane.jpg,False,False
+Gyanendra Malla,120,115,2800,10.0,26.9,40.2,65.8,5.1,Gyanendra_Malla.jpg,True,True
+Sharad Vesawkar,90,85,1800,20.0,22.1,34.8,70.3,4.8,Sharad_Vesawkar.jpg,True,True
+Dipendra Singh Airee,60,55,1400,15.0,32.8,26.7,80.6,4.3,Dipendra_Singh_Airee.jpg,True,False
+Aarif Sheikh,70,65,1200,5.0,18.5,42.1,63.9,5.2,Aarif_Sheikh.jpg,False,True
+Sompal Kami,82,82,850,40.0,14.3,22.4,78.9,5.9,Sompal_Kami.jpg,False,False
+Binod Bhandari,50,40,900,2.0,25.0,56.3,68.7,5.4,Binod_Bhandari.jpg,True,True
+Karan KC,54,3,579,6.0,13.3,18.7,85.2,5.8,Karan_KC.jpg,False,False
+Basanta Regmi,100,80,500,70.0,10.2,15.5,60.3,4.5,Basanta_Regmi.jpg,False,False
+Sushan Bhari,70,55,1800,5.0,28.7,47.2,72.1,5.6,Sushan_Bhari.jpg,True,True
+Rohit Kumar Paudel,50,45,1100,8.0,24.4,38.2,63.7,4.9,Rohit_Kumar_Paudel.jpg,True,True
+Kushal Bhurtel,30,30,900,5.0,30.0,35.6,80.5,4.5,Kushal_Bhurtel.jpg,True,True
+Sandeep Jora,45,40,800,10.0,22.7,32.5,67.9,5.2,Sandeep_Jora.jpg,True,True
+Kushal Malla,20,18,600,12.0,33.3,21.8,77.3,5.8,Kushal_Malla.jpg,True,False
+Avinash Bohara,35,25,200,40.0,8.9,20.5,55.6,4.9,Avinash_Bohara.jpg,False,False
+Lalit Rajbanshi,30,20,100,30.0,5.0,15.2,42.3,5.7,Lalit_Rajbanshi.jpg,False,False

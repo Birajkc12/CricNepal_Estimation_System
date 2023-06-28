@@ -1,12 +1,8 @@
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, session, redirect
 import pandas as pd
-import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
-import os
 from playerprofile import get_player_stats
-from flask import Flask, session, redirect
-
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
@@ -16,10 +12,12 @@ data = pd.read_csv("player_performance.csv")
 
 data["Image"] = data["Player"].str.replace(" ", "_") + ".jpg"
 
-
 # Calculate additional metrics
 data["Above_Avg_Batting"] = data["Batting_Average"] > data["Batting_Average"].mean()
 data["Above_Avg_Bowling"] = data["Bowling_Average"] > data["Bowling_Average"].mean()
+
+# Drop samples with missing values
+data.dropna(inplace=True)
 
 # Prepare the data for training
 X = data[
@@ -44,6 +42,7 @@ X_train_batting, X_test_batting, y_train_batting, y_test_batting = train_test_sp
 X_train_bowling, X_test_bowling, y_train_bowling, y_test_bowling = train_test_split(
     X, y_bowling, test_size=0.2, random_state=42
 )
+
 
 # Build decision tree classifiers
 clf_batting = DecisionTreeClassifier()
@@ -112,32 +111,72 @@ def player(player_name):
     return render_template("player.html", player=player)
 
 
-@app.route("/admin/login", methods=["GET", "POST"])
-def admin_login():
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-
-        # Perform authentication logic here (e.g., validate username and password)
-        # You can use a database or store admin credentials in a secure manner
-
-        # If authentication is successful, store the admin's session
-        session["admin"] = True
-        return redirect("/admin")
-
-    return render_template("admin_login.html")
+# Function to get all player names from the dataset
+def get_all_players(data):
+    return data["Player"].values.tolist()
 
 
-@app.route("/admin")
+# Route for the admin panel
+@app.route("/admin", methods=["GET", "POST"])
 def admin_panel():
+    global data  # Add this line to access the global 'data' variable
+
     # Check if the admin is logged in
-    if not session.get("admin"):
+    if session.get("admin"):
+        if request.method == "POST":
+            # Retrieve the player information from the form
+            player_name = request.form["player_name"]
+            matches = int(request.form["matches"])
+            innings = int(request.form["innings"])
+            runs = int(request.form["runs"])
+            wickets = int(request.form["wickets"])
+
+            if player_name not in data["Player"].values:
+                # Perform validation and save the player to the dataset
+                # Add the player information to the 'data' DataFrame
+                new_player = {
+                    "Player": player_name,
+                    "Matches": matches,
+                    "Innings": innings,
+                    "Runs": runs,
+                    "Wickets": wickets,
+                    # Add other player attributes as needed
+                }
+                data = data.append(new_player, ignore_index=True)
+            else:
+                # Update the player information in the 'data' DataFrame
+                existing_player = data.loc[data["Player"] == player_name]
+                existing_matches = existing_player["Matches"].values[0]
+                existing_innings = existing_player["Innings"].values[0]
+                existing_runs = existing_player["Runs"].values[0]
+                existing_wickets = existing_player["Wickets"].values[0]
+
+                # Increment the matches, innings, runs, and wickets based on the input values
+                matches += existing_matches
+                innings += existing_innings
+                runs += existing_runs
+                wickets += existing_wickets
+
+                data.loc[data["Player"] == player_name, "Matches"] = matches
+                data.loc[data["Player"] == player_name, "Innings"] = innings
+                data.loc[data["Player"] == player_name, "Runs"] = runs
+                data.loc[data["Player"] == player_name, "Wickets"] = wickets
+                # Update other player attributes as needed
+
+            # Save the updated dataset to the CSV file
+            data.to_csv("player_performance.csv", index=False)
+
+            return redirect("/admin")
+
+        players = get_all_players(data)  # Get all player names from the dataset
+
+        return render_template("admin_panel.html", players=players)
+    else:
+        # Redirect to the admin login page if not logged in
         return redirect("/admin/login")
 
-    # Render the admin panel HTML template
-    return render_template("admin_panel.html")
 
-
+# ...
 # ...
 
 if __name__ == "__main__":
