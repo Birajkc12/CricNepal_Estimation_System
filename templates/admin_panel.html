@@ -2,48 +2,157 @@
 <html>
   <head>
     <title>Admin Panel</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-pzjw8f+ua9olQ0r0+x9yGgPgHAq9jw/7L4x0skjvga/c9oO8Ean3yVq9tZ7bN7W"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        padding: 20px;
+      }
+
+      h1 {
+        margin-bottom: 30px;
+      }
+
+      form {
+        margin-bottom: 40px;
+      }
+
+      form h2 {
+        margin-bottom: 10px;
+      }
+
+      form select,
+      form input[type="text"],
+      form input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      form select {
+        height: 40px;
+      }
+
+      form input[type="submit"] {
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+      }
+
+      form input[type="submit"]:hover {
+        background-color: #45a049;
+      }
+    </style>
   </head>
   <body>
-    <h1>Admin Panel</h1>
+    <div class="container">
+      <h1>Admin Panel</h1>
 
-    <h2>Add Player</h2>
-    <form method="POST" action="/admin">
-      <!-- Player attribute fields here -->
-      <input
-        type="text"
-        name="player_name"
-        placeholder="Player Name"
-        required
-      />
-      <input type="number" name="matches" placeholder="Matches" required />
-      <input type="number" name="innings" placeholder="Innings" required />
-      <input type="number" name="runs" placeholder="Runs" required />
-      <input type="number" name="wickets" placeholder="Wickets" required />
+      <div class="row">
+        <div class="col-md-6">
+          <h2>Add Player</h2>
+          <form method="POST" action="/admin">
+            <!-- Player attribute fields here -->
+            <input
+              type="text"
+              name="player_name"
+              placeholder="Player Name"
+              required
+              class="form-control"
+            />
+            <input
+              type="number"
+              name="matches"
+              placeholder="Matches"
+              required
+              class="form-control"
+            />
+            <input
+              type="number"
+              name="innings"
+              placeholder="Innings"
+              required
+              class="form-control"
+            />
+            <input
+              type="number"
+              name="runs"
+              placeholder="Runs"
+              required
+              class="form-control"
+            />
+            <input
+              type="number"
+              name="wickets"
+              placeholder="Wickets"
+              required
+              class="form-control"
+            />
 
-      <input type="submit" value="Add Player" />
-    </form>
+            <input type="submit" value="Add Player" class="btn btn-primary" />
+          </form>
+        </div>
 
-    <h2>Update Player</h2>
-    <form method="POST" action="/admin">
-      <select name="player_name">
-        {% for player in players %}
-        <option value="{{ player }}">{{ player }}</option>
-        {% endfor %}
-      </select>
-      <!-- Player attribute fields here -->
-      <input
-        type="text"
-        name="player_name"
-        placeholder="Player Name"
-        readonly
-        required
-      />
-      <input type="number" name="matches" placeholder="Matches" required />
-      <input type="number" name="innings" placeholder="Innings" required />
-      <input type="number" name="runs" placeholder="Runs" required />
-      <input type="number" name="wickets" placeholder="Wickets" required />
+        <div class="col-md-6">
+          <h2>Update Player</h2>
+          <form method="POST" action="/admin">
+            <select name="player_name" class="form-control">
+              {% for player in players %}
+              <option value="{{ player }}">{{ player }}</option>
+              {% endfor %}
+            </select>
+            <!-- Player attribute fields here -->
+            <input
+              type="number"
+              name="matches"
+              placeholder="Matches"
+              required
+              class="form-control"
+            />
+            <input
+              type="number"
+              name="innings"
+              placeholder="Innings"
+              required
+              class="form-control"
+            />
+            <input
+              type="number"
+              name="runs"
+              placeholder="Runs"
+              required
+              class="form-control"
+            />
+            <input
+              type="number"
+              name="balls_faced"
+              placeholder="Balls Faced"
+              required
+            />
 
-      <input type="submit" value="Update Player" />
-    </form>
+            <input
+              type="number"
+              name="wickets"
+              placeholder="Wickets"
+              required
+              class="form-control"
+            />
+
+            <input
+              type="submit"
+              value="Update Player"
+              class="btn btn-primary"
+            />
+          </form>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

@@ -12,9 +12,50 @@ data = pd.read_csv("player_performance.csv")
 
 data["Image"] = data["Player"].str.replace(" ", "_") + ".jpg"
 
+
 # Calculate additional metrics
 data["Above_Avg_Batting"] = data["Batting_Average"] > data["Batting_Average"].mean()
 data["Above_Avg_Bowling"] = data["Bowling_Average"] > data["Bowling_Average"].mean()
+
+
+# Function to calculate batting average
+def calculate_batting_average(row):
+    if row["Innings"] > 0:
+        return row["Runs"] / row["Innings"]
+    else:
+        return 0
+
+
+# Function to calculate bowling average
+def calculate_bowling_average(row):
+    if row["Wickets"] > 0:
+        return row["Runs"] / row["Wickets"]
+    else:
+        return 0
+
+
+# Function to calculate strike rate
+def calculate_strike_rate(row):
+    if row["Innings"] > 0 and row["Balls_Faced"] > 0:
+        strike_rate = (row["Runs"] / row["Balls_Faced"]) * 100
+        return strike_rate
+    else:
+        return 0.0
+
+
+# Function to calculate economy rate
+def calculate_economy_rate(row):
+    if row["Wickets"] > 0:
+        return (row["Runs"] / row["Wickets"]) * 6
+    else:
+        return 0
+
+
+# Calculate additional metrics
+data["Batting_Average"] = data.apply(calculate_batting_average, axis=1)
+data["Bowling_Average"] = data.apply(calculate_bowling_average, axis=1)
+data["Strike_Rate"] = data.apply(calculate_strike_rate, axis=1)
+data["Economy_Rate"] = data.apply(calculate_economy_rate, axis=1)
 
 # Drop samples with missing values
 data.dropna(inplace=True)
@@ -42,7 +83,6 @@ X_train_batting, X_test_batting, y_train_batting, y_test_batting = train_test_sp
 X_train_bowling, X_test_bowling, y_train_bowling, y_test_bowling = train_test_split(
     X, y_bowling, test_size=0.2, random_state=42
 )
-
 
 # Build decision tree classifiers
 clf_batting = DecisionTreeClassifier()
@@ -130,6 +170,7 @@ def admin_panel():
             innings = int(request.form["innings"])
             runs = int(request.form["runs"])
             wickets = int(request.form["wickets"])
+            balls_faced = int(request.form["balls_faced"])
 
             if player_name not in data["Player"].values:
                 # Perform validation and save the player to the dataset
@@ -140,28 +181,24 @@ def admin_panel():
                     "Innings": innings,
                     "Runs": runs,
                     "Wickets": wickets,
-                    # Add other player attributes as needed
+                    "Balls_Faced": balls_faced,
                 }
                 data = data.append(new_player, ignore_index=True)
             else:
                 # Update the player information in the 'data' DataFrame
-                existing_player = data.loc[data["Player"] == player_name]
-                existing_matches = existing_player["Matches"].values[0]
-                existing_innings = existing_player["Innings"].values[0]
-                existing_runs = existing_player["Runs"].values[0]
-                existing_wickets = existing_player["Wickets"].values[0]
+                player_index = data.index[data["Player"] == player_name].tolist()[0]
 
-                # Increment the matches, innings, runs, and wickets based on the input values
-                matches += existing_matches
-                innings += existing_innings
-                runs += existing_runs
-                wickets += existing_wickets
+                data.at[player_index, "Matches"] += matches
+                data.at[player_index, "Innings"] += innings
+                data.at[player_index, "Runs"] += runs
+                data.at[player_index, "Wickets"] += wickets
+                data.at[player_index, "Balls_Faced"] += balls_faced
 
-                data.loc[data["Player"] == player_name, "Matches"] = matches
-                data.loc[data["Player"] == player_name, "Innings"] = innings
-                data.loc[data["Player"] == player_name, "Runs"] = runs
-                data.loc[data["Player"] == player_name, "Wickets"] = wickets
-                # Update other player attributes as needed
+            # Recalculate the batting average, bowling average, strike rate, and economy rate
+            data["Batting_Average"] = data.apply(calculate_batting_average, axis=1)
+            data["Bowling_Average"] = data.apply(calculate_bowling_average, axis=1)
+            data["Strike_Rate"] = data.apply(calculate_strike_rate, axis=1)
+            data["Economy_Rate"] = data.apply(calculate_economy_rate, axis=1)
 
             # Save the updated dataset to the CSV file
             data.to_csv("player_performance.csv", index=False)

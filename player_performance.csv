@@ -1,18 +1,18 @@
-Player,Matches,Innings,Runs,Wickets,Batting_Average,Bowling_Average,Strike_Rate,Economy_Rate,Image,Above_Avg_Batting,Above_Avg_Bowling
-Paras Khadka,100,95,3000,50.0,35.5,28.6,75.2,4.2,Paras_Khadka.jpg,True,False
-Sandeep Lamichhane,50,25,100,80.0,12.5,18.2,87.5,6.5,Sandeep_Lamichhane.jpg,False,False
-Gyanendra Malla,120,115,2800,10.0,26.9,40.2,65.8,5.1,Gyanendra_Malla.jpg,True,True
-Sharad Vesawkar,90,85,1800,20.0,22.1,34.8,70.3,4.8,Sharad_Vesawkar.jpg,True,True
-Dipendra Singh Airee,60,55,1400,15.0,32.8,26.7,80.6,4.3,Dipendra_Singh_Airee.jpg,True,False
-Aarif Sheikh,70,65,1200,5.0,18.5,42.1,63.9,5.2,Aarif_Sheikh.jpg,False,True
-Sompal Kami,82,82,850,40.0,14.3,22.4,78.9,5.9,Sompal_Kami.jpg,False,False
-Binod Bhandari,50,40,900,2.0,25.0,56.3,68.7,5.4,Binod_Bhandari.jpg,True,True
-Karan KC,54,3,579,6.0,13.3,18.7,85.2,5.8,Karan_KC.jpg,False,False
-Basanta Regmi,100,80,500,70.0,10.2,15.5,60.3,4.5,Basanta_Regmi.jpg,False,False
-Sushan Bhari,70,55,1800,5.0,28.7,47.2,72.1,5.6,Sushan_Bhari.jpg,True,True
-Rohit Kumar Paudel,50,45,1100,8.0,24.4,38.2,63.7,4.9,Rohit_Kumar_Paudel.jpg,True,True
-Kushal Bhurtel,30,30,900,5.0,30.0,35.6,80.5,4.5,Kushal_Bhurtel.jpg,True,True
-Sandeep Jora,45,40,800,10.0,22.7,32.5,67.9,5.2,Sandeep_Jora.jpg,True,True
-Kushal Malla,20,18,600,12.0,33.3,21.8,77.3,5.8,Kushal_Malla.jpg,True,False
-Avinash Bohara,35,25,200,40.0,8.9,20.5,55.6,4.9,Avinash_Bohara.jpg,False,False
-Lalit Rajbanshi,30,20,100,30.0,5.0,15.2,42.3,5.7,Lalit_Rajbanshi.jpg,False,False
+Player,Matches,Innings,Runs,Wickets,Batting_Average,Bowling_Average,Strike_Rate,Economy_Rate,Image,Above_Avg_Batting,Above_Avg_Bowling,Balls_Faced
+Paras Khadka,100,95,3000,50,31.57894736842105,60.0,52.63157894736842,360.0,Paras_Khadka.jpg,True,False,5700
+Sandeep Lamichhane,51,26,123,81,4.730769230769231,1.5185185185185186,8.013029315960912,9.11111111111111,Sandeep_Lamichhane.jpg,False,False,1535
+Gyanendra Malla,120,115,2800,10,24.347826086956523,280.0,40.57971014492754,1680.0,Gyanendra_Malla.jpg,False,True,6900
+Sharad Vesawkar,90,85,1800,20,21.176470588235293,90.0,35.294117647058826,540.0,Sharad_Vesawkar.jpg,False,False,5100
+Dipendra Singh Airee,60,55,1400,15,25.454545454545453,93.33333333333333,42.42424242424242,560.0,Dipendra_Singh_Airee.jpg,False,False,3300
+Aarif Sheikh,70,65,1200,5,18.46153846153846,240.0,30.76923076923077,1440.0,Aarif_Sheikh.jpg,False,True,3900
+Sompal Kami,83,83,875,42,10.542168674698795,20.833333333333332,17.570281124497992,125.0,Sompal_Kami.jpg,False,False,4980
+Binod Bhandari,50,40,900,2,22.5,450.0,37.5,2700.0,Binod_Bhandari.jpg,False,True,2400
+Karan KC,54,3,579,6,193.0,96.5,321.6666666666667,579.0,Karan_KC.jpg,True,False,180
+Basanta Regmi,100,80,500,70,6.25,7.142857142857143,10.416666666666668,42.85714285714286,Basanta_Regmi.jpg,False,False,4800
+Sushan Bhari,70,55,1800,5,32.72727272727273,360.0,54.54545454545454,2160.0,Sushan_Bhari.jpg,True,True,3300
+Rohit Kumar Paudel,50,45,1100,8,24.444444444444443,137.5,40.74074074074074,825.0,Rohit_Kumar_Paudel.jpg,False,True,2700
+Kushal Bhurtel,32,32,1079,5,33.71875,215.8,56.19791666666667,1294.8000000000002,Kushal_Bhurtel.jpg,True,True,1920
+Sandeep Jora,45,40,800,10,20.0,80.0,33.33333333333333,480.0,Sandeep_Jora.jpg,False,False,2400
+Kushal Malla,20,18,600,12,33.333333333333336,50.0,55.55555555555556,300.0,Kushal_Malla.jpg,True,False,1080
+Avinash Bohara,35,25,200,40,8.0,5.0,13.333333333333334,30.0,Avinash_Bohara.jpg,False,False,1500
+Lalit Rajbanshi,30,20,100,30,5.0,3.3333333333333335,8.333333333333332,20.0,Lalit_Rajbanshi.jpg,False,False,1200
