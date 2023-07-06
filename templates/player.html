@@ -65,7 +65,7 @@
       <!-- Add the following code to display the player's stats -->
       <div class="card">
         <img
-          src="{{ url_for('static', filename='player_images/' ~ player['Image']) }}"
+          src="{{ url_for('static', filename='player_images/' ~ player['Image']|lower) }}"
           alt="{{ player['Player'] }} Image"
           class="card-img-top"
         />

@@ -1,9 +1,109 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Prediction Result</title>
+    <title>CricNepal Estimation System - Player Prediction</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        background-color: #f8f9fa;
+        padding-top: 50px;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      header {
+        text-align: center;
+        padding: 20px 0;
+        background-color: #333;
+        color: #fff;
+      }
+      h2 {
+        margin-top: 40px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .btn-primary {
+        margin-top: 20px;
+      }
+      .alert {
+        margin-top: 40px;
+      }
+    </style>
   </head>
   <body>
-    <h1>Prediction Result: {{ result }}</h1>
+    <header>
+      <h1>CricNepal Estimation System</h1>
+    </header>
+
+    <div class="container">
+      <h2>Player Performance Prediction</h2>
+      <form action="/predict" method="POST">
+        <div class="form-group">
+          <label for="matches">Matches:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="matches"
+            name="matches"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="innings">Innings:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="innings"
+            name="innings"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="runs">Runs:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="runs"
+            name="runs"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="wickets">Wickets:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="wickets"
+            name="wickets"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="balls_faced">Balls Faced:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="balls_faced"
+            name="balls_faced"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Predict</button>
+      </form>
+
+      {% if prediction %}
+      <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Prediction Result:</h4>
+        <p>The player is predicted to have {{ prediction }} performance.</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   </body>
 </html>

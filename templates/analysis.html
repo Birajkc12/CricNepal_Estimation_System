@@ -82,7 +82,7 @@
             <a href="/player/{{ player.Player }}" class="card">
               <div class="card-body">
                 <img
-                  src="{{ url_for('static', filename='player_images/' ~ player['Image']) }}"
+                  src="{{ url_for('static', filename='player_images/' ~ player['Image']|lower) }}"
                   alt="{{ player['Player'] }} Image"
                   class="card-img-top"
                 />

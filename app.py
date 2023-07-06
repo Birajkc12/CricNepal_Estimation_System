@@ -3,15 +3,19 @@ import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from playerprofile import get_player_stats
+from werkzeug.utils import secure_filename
+from sklearn.linear_model import LinearRegression
+import os
+import pickle
+import joblib
 
 app = Flask(__name__)
-app.secret_key = "your_secret_key"
+app.secret_key = "64131316905e8dea79bc77eda222e351"
 
 # Load the dataset
 data = pd.read_csv("player_performance.csv")
 
 data["Image"] = data["Player"].str.replace(" ", "_") + ".jpg"
-
 
 # Calculate additional metrics
 data["Above_Avg_Batting"] = data["Batting_Average"] > data["Batting_Average"].mean()
@@ -156,6 +160,14 @@ def get_all_players(data):
     return data["Player"].values.tolist()
 
 
+# Function to sanitize the player's name for generating the image filename
+def sanitize_player_name(player_name):
+    # Remove special characters and replace spaces with underscores
+    sanitized_name = "".join(c for c in player_name if c.isalnum() or c.isspace())
+    sanitized_name = sanitized_name.replace(" ", "_")
+    return sanitized_name
+
+
 # Route for the admin panel
 @app.route("/admin", methods=["GET", "POST"])
 def admin_panel():
@@ -171,6 +183,20 @@ def admin_panel():
             runs = int(request.form["runs"])
             wickets = int(request.form["wickets"])
             balls_faced = int(request.form["balls_faced"])
+            player_image = request.files["player_image"]
+
+            # Check if a player image was uploaded
+            if "player_image" in request.files:
+                player_image = request.files["player_image"]
+                if player_image.filename != "":
+                    filename = secure_filename(player_image.filename)
+                    player_name = sanitize_player_name(
+                        player_name
+                    )  # Sanitize the player's name
+                    filename = (
+                        player_name + os.path.splitext(filename)[1]
+                    )  # Use sanitized player's name as the filename
+                    player_image.save(os.path.join("static/player_images", filename))
 
             if player_name not in data["Player"].values:
                 # Perform validation and save the player to the dataset
@@ -194,6 +220,11 @@ def admin_panel():
                 data.at[player_index, "Wickets"] += wickets
                 data.at[player_index, "Balls_Faced"] += balls_faced
 
+            # Save the player image
+            if player_image:
+                filename = secure_filename(player_image.filename)
+                player_image.save(os.path.join("static/player_images", filename))
+
             # Recalculate the batting average, bowling average, strike rate, and economy rate
             data["Batting_Average"] = data.apply(calculate_batting_average, axis=1)
             data["Bowling_Average"] = data.apply(calculate_bowling_average, axis=1)
@@ -213,8 +244,131 @@ def admin_panel():
         return redirect("/admin/login")
 
 
-# ...
-# ...
+# Route for the admin login
+@app.route("/admin/login", methods=["GET", "POST"])
+def admin_login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        # Add your authentication logic here
+        # For example, you can check if the username and password match a predefined admin account
+
+        if username == "admin" and password == "password":
+            session["admin"] = True  # Set the admin flag in the session
+            return redirect("/admin")
+
+        return render_template("admin_login.html", error="Invalid username or password")
+
+    return render_template("admin_login.html")
+
+
+@app.route("/upload", methods=["POST"])
+def upload():
+    if "file" not in request.files:
+        return "No file uploaded", 400
+
+    player_image = request.files["file"]
+    if player_image.filename == "":
+        return "Invalid file", 400
+
+    filename, file_extension = os.path.splitext(player_image.filename)
+    file_extension = file_extension.lower()
+    filename = secure_filename(filename + file_extension)
+    player_image.save(os.path.join("static/player_images", filename))
+
+    return "File uploaded successfully"
+
+
+import pandas as pd
+
+# Load the initial dataset from the CSV file
+data = pd.read_csv("player_performance.csv")
+
+# ... other code ...
+
+
+@app.route("/admin/delete", methods=["POST"])
+def delete_player():
+    global data  # Use the global 'data' variable
+
+    player_name = request.form["player_name"]
+
+    # Delete the player from the 'data' DataFrame
+    data = data[data["Player"] != player_name]
+
+    # Save the updated dataset to the CSV file
+    data.to_csv("player_performance.csv", index=False)
+
+    return redirect("/admin")
+
+
+@app.route("/prediction")
+def prediction():
+    return render_template("prediction.html")
+
+
+# Load the dataset
+data = pd.read_csv("player_performance.csv")
+
+# Handle missing values
+data.fillna(0, inplace=True)  # Replace NaN values with 0
+
+
+# Route for prediction
+@app.route("/predict", methods=["POST"])
+def predict():
+    # Retrieve the form data
+    matches = int(request.form["matches"])
+    innings = int(request.form["innings"])
+    runs = int(request.form["runs"])
+    wickets = int(request.form["wickets"])
+    balls_faced = int(request.form["balls_faced"])
+
+    # Prepare the data for training
+    X = data[
+        [
+            "Matches",
+            "Innings",
+            "Runs",
+            "Wickets",
+            "Batting_Average",
+            "Bowling_Average",
+            "Strike_Rate",
+            "Economy_Rate",
+        ]
+    ]
+
+    try:
+        y = data[
+            "Above_Avg_Batting"
+        ]  # Replace "Above_Avg_Batting" with the actual target variable column name
+    except KeyError as e:
+        return f"Error: {e}. Please check the column name for the target variable in your dataset."
+
+    # Train the linear regression model
+    model = LinearRegression()
+    model.fit(X, y)
+
+    # Save the trained model
+    joblib.dump(model, "trained_model.pkl")
+
+    # Perform the prediction
+    model = joblib.load("trained_model.pkl")  # Load the trained model
+
+    X_input = [
+        [matches, innings, runs, wickets, balls_faced]
+    ]  # Format the input features
+
+    try:
+        y_pred = model.predict(X_input)  # Make the prediction
+    except Exception as e:
+        return f"Error occurred during prediction: {e}"
+
+    # Format and return the prediction result
+    prediction_result = f"The predicted value is: {y_pred[0]}"
+    return render_template("prediction.html", prediction=prediction_result)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
