@@ -9,6 +9,7 @@ import os
 import pickle
 import joblib
 
+
 app = Flask(__name__)
 app.secret_key = "64131316905e8dea79bc77eda222e351"
 
@@ -104,6 +105,9 @@ def home():
 
 
 # Route for the analysis page
+import numpy as np
+
+
 @app.route("/analysis", methods=["GET", "POST"])
 def analysis():
     search_query = request.form.get("search_query")
@@ -120,10 +124,14 @@ def analysis():
     )
 
     above_average_batting = filtered_data.loc[
-        batting_predictions | filtered_data["Above_Avg_Batting"]
+        np.logical_or(
+            batting_predictions, filtered_data["Above_Avg_Batting"].astype(bool)
+        )
     ]
     above_average_bowling = filtered_data.loc[
-        bowling_predictions | filtered_data["Above_Avg_Bowling"]
+        np.logical_or(
+            bowling_predictions, filtered_data["Above_Avg_Bowling"].astype(bool)
+        )
     ]
 
     batting_chart_data = {

@@ -1,0 +1,15 @@
+Opponent,Location,Toss Winner,Result,Score,Total Runs,Opponent_Strength,Location_Factor,Toss_Winner_Factor
+India,Away,India,Defeat,157/7 (20),157,8,0.9,0.7
+Bhutan,Home,Nepal,Victory,154/4 (20),154,4,1.1,1.2
+Sri Lanka,Away,Sri Lanka,Defeat,97/10 (17.4),97,6,0.8,0.6
+Bhutan,Away,Bhutan,Victory,121/4 (15.2),121,3,1.3,0.9
+Bangladesh,Home,Nepal,Defeat,142/9 (20),142,7,1.2,1.1
+Afghanistan,Away,Afghanistan,Defeat,137/10 (19.2),137,5,0.7,0.5
+Bhutan,Home,Bhutan,Victory,91/2 (12.2),91,2,1.2,1.3
+India,Home,India,Defeat,149/8 (20),149,8,1.1,0.8
+Bangladesh,Away,Bangladesh,Defeat,135/8 (20),135,7,0.9,1.1
+Sri Lanka,Home,Nepal,Defeat,125/10 (19.5),125,6,1.2,1
+Bangladesh,Home,Bangladesh,Defeat,142/9 (20),132,7,0.9,0.9
+Bangladesh,Away,Bangladesh,Defeat,142/9 (20),102,7,0.8,1.1
+Bangladesh,Home,Nepal,Victory,169/5 (20),169,7,1.3,1
+India,Away,India,Defeat,142/8 (20),142,8,0.9,0.7

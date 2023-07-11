@@ -195,8 +195,84 @@
               class="btn btn-danger delete-btn"
             />
           </form>
+          <div class="col-md-6">
+            <h2>Update Carousel</h2>
+            <form id="carouselForm">
+              <div class="form-group">
+                <label for="sliderHeadline1">Slider Headline 1:</label>
+                <input
+                  type="text"
+                  name="sliderHeadline1"
+                  class="form-control"
+                  placeholder="Slider Headline 1"
+                />
+              </div>
+              <div class="form-group">
+                <label for="sliderDescription1">Slider Description 1:</label>
+                <textarea
+                  name="sliderDescription1"
+                  class="form-control"
+                  placeholder="Slider Description 1"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="sliderHeadline2">Slider Headline 2:</label>
+                <input
+                  type="text"
+                  name="sliderHeadline2"
+                  class="form-control"
+                  placeholder="Slider Headline 2"
+                />
+              </div>
+              <div class="form-group">
+                <label for="sliderDescription2">Slider Description 2:</label>
+                <textarea
+                  name="sliderDescription2"
+                  class="form-control"
+                  placeholder="Slider Description 2"
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                Update Carousel
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
+    <script>
+      document
+        .getElementById("carouselForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          updateCarouselContent();
+        });
+
+      function updateCarouselContent() {
+        // Get the form input values
+        var sliderHeadline1 = document.getElementById("sliderHeadline1").value;
+        var sliderDescription1 =
+          document.getElementById("sliderDescription1").value;
+        var sliderHeadline2 = document.getElementById("sliderHeadline2").value;
+        var sliderDescription2 =
+          document.getElementById("sliderDescription2").value;
+
+        // Update the carousel content
+        document.getElementById("sliderHeadline1").textContent =
+          sliderHeadline1;
+        document.getElementById("sliderDescription1").textContent =
+          sliderDescription1;
+        document.getElementById("sliderHeadline2").textContent =
+          sliderHeadline2;
+        document.getElementById("sliderDescription2").textContent =
+          sliderDescription2;
+
+        // Clear the form inputs
+        document.getElementById("sliderHeadline1").value = "";
+        document.getElementById("sliderDescription1").value = "";
+        document.getElementById("sliderHeadline2").value = "";
+        document.getElementById("sliderDescription2").value = "";
+      }
+    </script>
   </body>
 </html>
