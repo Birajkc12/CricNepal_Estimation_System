@@ -1,13 +1,19 @@
 from flask import Flask, render_template, request, session, redirect
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
+
+# Import DecisionTreeRegressor from sklearn.tree
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import train_test_split
 from playerprofile import get_player_stats
 from werkzeug.utils import secure_filename
 from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
 import os
 import pickle
+import csv
 import joblib
+from predict import make_prediction
 
 
 app = Flask(__name__)
@@ -323,60 +329,265 @@ data = pd.read_csv("player_performance.csv")
 data.fillna(0, inplace=True)  # Replace NaN values with 0
 
 
-# Route for prediction
+# # Route for prediction
+# @app.route("/predict", methods=["POST"])
+# def predict():
+#     # Retrieve the form data
+#     matches = int(request.form["matches"])
+#     innings = int(request.form["innings"])
+#     runs = int(request.form["runs"])
+#     wickets = int(request.form["wickets"])
+#     balls_faced = int(request.form["balls_faced"])
+
+#     # Prepare the data for training
+#     X = data[
+#         [
+#             "Matches",
+#             "Innings",
+#             "Runs",
+#             "Wickets",
+#             "Batting_Average",
+#             "Bowling_Average",
+#             "Strike_Rate",
+#             "Economy_Rate",
+#         ]
+#     ]
+
+#     try:
+#         y = data[
+#             "Above_Avg_Batting"
+#         ]  # Replace "Above_Avg_Batting" with the actual target variable column name
+#     except KeyError as e:
+#         return f"Error: {e}. Please check the column name for the target variable in your dataset."
+
+#     # Train the linear regression model
+#     model = LinearRegression()
+#     model.fit(X, y)
+
+#     # Save the trained model
+#     joblib.dump(model, "trained_model.pkl")
+
+#     # Perform the prediction
+#     model = joblib.load("trained_model.pkl")  # Load the trained model
+
+#     X_input = [
+#         [matches, innings, runs, wickets, balls_faced]
+#     ]  # Format the input features
+
+#     try:
+#         y_pred = model.predict(X_input)  # Make the prediction
+#     except Exception as e:
+#         return f"Error occurred during prediction: {e}"
+
+#     # Format and return the prediction result
+#     prediction_result = f"The predicted value is: {y_pred[0]}"
+#     return render_template("prediction.html", prediction=prediction_result)
+
+
+# Route for the prediction
 @app.route("/predict", methods=["POST"])
 def predict():
-    # Retrieve the form data
-    matches = int(request.form["matches"])
-    innings = int(request.form["innings"])
-    runs = int(request.form["runs"])
-    wickets = int(request.form["wickets"])
-    balls_faced = int(request.form["balls_faced"])
+    opponent = request.form["opponent"]
+    location = request.form["location"]
+    toss_winner = request.form["toss_winner"]
 
-    # Prepare the data for training
-    X = data[
-        [
-            "Matches",
-            "Innings",
-            "Runs",
-            "Wickets",
-            "Batting_Average",
-            "Bowling_Average",
-            "Strike_Rate",
-            "Economy_Rate",
-        ]
-    ]
+    prediction = make_prediction(opponent, location, toss_winner)
 
-    try:
-        y = data[
-            "Above_Avg_Batting"
-        ]  # Replace "Above_Avg_Batting" with the actual target variable column name
-    except KeyError as e:
-        return f"Error: {e}. Please check the column name for the target variable in your dataset."
+    return render_template("prediction.html", prediction=prediction)
 
-    # Train the linear regression model
+
+# Load player data from CSV file
+def load_player_data(filename):
+    players = []
+    with open(filename, "r") as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        for row in csv_reader:
+            players.append(row)
+    return players
+
+
+# Load ICC ranking data from a similar CSV file if needed
+# icc_ranking = ...
+
+
+# Route for the player comparison page
+@app.route("/compare", methods=["GET", "POST"])
+def compare_players():
+    if request.method == "POST":
+        player1_name = request.form["player1"]
+        player2_name = request.form["player2"]
+
+        players = load_player_data("player_performance.csv")
+        selected_player1 = next(
+            (player for player in players if player["Player"] == player1_name), None
+        )
+        selected_player2 = next(
+            (player for player in players if player["Player"] == player2_name), None
+        )
+
+        if selected_player1 is None or selected_player2 is None:
+            error_message = "One or both players are not found."
+            return render_template("error.html", error_message=error_message)
+
+        return render_template(
+            "compare.html",
+            players=players,
+            player1=selected_player1,
+            player2=selected_player2,
+        )
+
+    # If the request method is GET, display the comparison form
+    return render_template("compare.html", players=players)
+
+
+# ...
+
+# ...
+
+
+# Load player data from CSV file
+def load_player_data(file_path):
+    player_data = []
+    with open(file_path, "r") as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        for row in csv_reader:
+            player_data.append(row)
+    return player_data
+
+
+# Initialize player data
+players = load_player_data("player_performance.csv")
+
+
+# Route for the analysis page
+@app.route("/analyze", methods=["POST"])
+def analyze_performance():
+    selected_player = request.form["player"]
+    pitch_type = request.form["pitch_type"]
+    weather = request.form["weather"]
+    algorithm = request.form["algorithm"]
+
+    # Find the selected player's data from the players list
+    player1 = next(
+        (player for player in players if player["Player"] == selected_player), None
+    )
+
+    if player1 is None:
+        error_message = "Selected player not found in the dataset."
+        return render_template("error.html", error_message=error_message)
+
+    # Pass player1 data, pitch_type, and weather to the analyze_player_performance function
+    prediction = analyze_player_performance(player1, pitch_type, weather, algorithm)
+
+    return render_template(
+        "analysis_result.html",
+        prediction=prediction,
+        player_image=player1["Image"],
+    )
+
+
+def analyze_player_performance(player, pitch_type, weather, algorithm):
+    if algorithm == "linear":
+        prediction = predict_linear_regression(player, pitch_type, weather)
+    else:
+        prediction = predict_decision_tree(player, pitch_type, weather)
+        return prediction  # Return the prediction dictionary directly
+
+    return render_template(
+        "analysis_result.html",
+        prediction=prediction,
+        player_image=player["Image"],
+    )
+
+
+def predict_linear_regression(player, pitch_type, weather):
+    # Convert the list of dictionaries to a DataFrame
+    df_players = pd.DataFrame(players)
+
+    # Use batting and bowling averages as features for prediction
+    X = df_players[["Batting_Average", "Bowling_Average"]]
+    y = df_players["Runs"]
+
+    # Split dataset into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+
+    # Create a linear regression model
     model = LinearRegression()
-    model.fit(X, y)
+    model.fit(X_train, y_train)
 
-    # Save the trained model
-    joblib.dump(model, "trained_model.pkl")
+    # Predict runs for the selected player
+    predicted_runs = model.predict(
+        [[float(player["Batting_Average"]), float(player["Bowling_Average"])]]
+    )
 
-    # Perform the prediction
-    model = joblib.load("trained_model.pkl")  # Load the trained model
+    return {"Predicted_Runs": predicted_runs[0]}
 
-    X_input = [
-        [matches, innings, runs, wickets, balls_faced]
-    ]  # Format the input features
 
-    try:
-        y_pred = model.predict(X_input)  # Make the prediction
-    except Exception as e:
-        return f"Error occurred during prediction: {e}"
+def predict_decision_tree(player, pitch_type, weather):
+    # Convert the list of dictionaries to a DataFrame
+    df_players = pd.DataFrame(players)
 
-    # Format and return the prediction result
-    prediction_result = f"The predicted value is: {y_pred[0]}"
-    return render_template("prediction.html", prediction=prediction_result)
+    # Use batting and bowling averages as features for prediction
+    X = df_players[["Batting_Average", "Bowling_Average"]]
+    y = df_players["Runs"]
 
+    # Split dataset into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+
+    # Create a decision tree regressor model
+    model = DecisionTreeRegressor(random_state=42)
+    model.fit(X_train, y_train)
+
+    # Predict runs for the selected player
+    predicted_runs = model.predict(
+        [[float(player["Batting_Average"]), float(player["Bowling_Average"])]]
+    )
+
+    return {"Predicted_Runs": predicted_runs[0]}
+
+
+# ---------------important one--------------------------
+def analyze_player_performance(player, pitch_type, weather, algorithm):
+    # ... (your analysis code)
+
+    predicted_performance = {
+        "Player": player["Player"],
+        "Predicted_Batting_Average": float(player["Batting_Average"])
+        + get_batting_adjustment(pitch_type, weather),
+        "Predicted_Bowling_Average": float(player["Bowling_Average"])
+        + get_bowling_adjustment(pitch_type, weather),
+        "Pitch_Type": pitch_type,
+        "Weather": weather,
+        "PlayerImage": player["Image"],  # Include the player's image filename
+        # ... (other predictions)
+    }
+    return predicted_performance
+
+
+# Define functions to get adjustment values based on pitch type and weather
+def get_batting_adjustment(pitch_type, weather):
+    if pitch_type == "Green" and weather == "Rainy":
+        return -5.0  # Adjust batting average for challenging conditions
+    elif pitch_type == "Dry" and weather == "Sunny":
+        return 2.0  # Adjust batting average for favorable conditions
+    else:
+        return 0.0  # No adjustment for other conditions
+
+
+def get_bowling_adjustment(pitch_type, weather):
+    if pitch_type == "Green" and weather == "Rainy":
+        return 3.0  # Adjust bowling average for challenging conditions
+    elif pitch_type == "Dry" and weather == "Sunny":
+        return -2.0  # Adjust bowling average for favorable conditions
+    else:
+        return 0.0  # No adjustment for other conditions
+
+
+# ---------------important one--------------------------
 
 if __name__ == "__main__":
     app.run(debug=True)

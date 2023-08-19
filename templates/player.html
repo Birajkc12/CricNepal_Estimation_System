@@ -6,85 +6,435 @@
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     />
-    <style>
-      /* CSS styling for the player stats page */
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+    <style type="text/css">
       body {
         background-color: #f5f5f5;
+        font-family: Arial, sans-serif;
       }
-
-      .container {
+      .container1 {
         margin-top: 40px;
       }
-
       .card {
-        background-color: #fff;
         border-radius: 8px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
         border: none;
       }
-
       .card-body {
         padding: 20px;
       }
-
       .card-img-top {
         max-height: 300px;
         object-fit: contain;
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
       }
-
+      h1 {
+        font-size: 32px;
+        margin-bottom: 20px;
+        color: #333;
+      }
       h2 {
         font-size: 24px;
         margin-top: 20px;
         margin-bottom: 10px;
         color: #333;
       }
-
       p {
-        margin-bottom: 5px;
+        margin-bottom: 10px;
         color: #666;
       }
-
       .btn-primary {
         background-color: #007bff;
         border: none;
         transition: background-color 0.3s ease;
       }
-
       .btn-primary:hover {
         background-color: #0069d9;
+      }
+      .chs__nav ul {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+      }
+      .chs__nav li {
+        margin: 0 10px;
+      }
+      .chs__nav a {
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+      .chs__nav a:hover {
+        color: #007bff;
+      }
+      .td-block-row [class*="td-block-span"] {
+        display: block;
+        min-height: 1px;
+        float: left;
+        padding-right: 24px;
+        padding-left: 24px;
+      }
+      .td-block-span12 {
+        width: 100%;
+      }
+      .row {
+        --bs-gutter-x: 1.5rem;
+        --bs-gutter-y: 0;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: calc(-1 * var(--bs-gutter-y));
+        margin-right: calc(-0.5 * var(--bs-gutter-x));
+        margin-left: calc(-0.5 * var(--bs-gutter-x));
+        font-size: 1rem;
+      }
+      .v-align {
+        display: flex;
+        align-items: center;
+      }
+      .playerHeroSection {
+        background: #80ebff;
+        padding: 30px 0;
+        height: 60vh;
+      }
+
+      @media (min-width: 1200px) {
+        .container,
+        .container-lg,
+        .container-md,
+        .container-sm,
+        .container-xl {
+          max-width: 1140px;
+        }
+      }
+      .container,
+      .container-fluid,
+      .container-lg,
+      .container-md,
+      .container-sm,
+      .container-xl,
+      .container-xxl {
+        --bs-gutter-x: 1.5rem;
+        --bs-gutter-y: 0;
+        width: 100%;
+        padding-right: calc(var(--bs-gutter-x) * 0.5);
+        padding-left: calc(var(--bs-gutter-x) * 0.5);
+        margin-right: auto;
+        margin-left: auto;
+      }
+      .p-3 {
+        padding: 1rem !important;
+      }
+      @media (min-width: 768px) {
+        .col-md-4 {
+          flex: 0 0 auto;
+          width: 33.33333333%;
+        }
+      }
+      .playerHeroSectionBlock {
+        background: url(../img/pattern-bg.svg) no-repeat left center #80ebff;
+        background-size: 100%;
+        padding: 40px 0 0 0;
+      }
+      @media (min-width: 768px) {
+        .col-md-8 {
+          flex: 0 0 auto;
+          width: 66.66666667%;
+        }
+      }
+      .rounded-circle {
+        border-radius: 50% !important;
+      }
+      .img-thumbnail {
+        padding: 0.25rem;
+        background-color: var(--bs-body-bg);
+        border: var(--bs-border-width) solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+        max-width: 100%;
+        height: auto;
+      }
+      @media (min-width: 768px) {
+        .col-md-4 {
+          flex: 0 0 auto;
+          width: 33.33333333%;
+        }
+      }
+      .box {
+        border-radius: 4px;
+        -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+        box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+        background: #fff;
+        margin-bottom: 40px;
+      }
+      .PlayerName {
+        font-size: 1.75rem;
+      }
+      .pad-20 {
+        padding: 20px;
+      }
+      h3 {
+        font-size: 1rem;
+        font-weight: bold;
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <h1>Player Stats</h1>
+    <nav class="navbar navbar-expand-lg fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="/">
+          <img
+            src="{{ url_for('static', filename='player_images/CricNepal Logo.png') }}"
+            alt="CricNepal Logo"
+            class="logo"
+          />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#ranking">ICC Ranking</a>
+            </li>
 
-      <!-- Add the following code to display the player's stats -->
-      <div class="card">
-        <img
-          src="{{ url_for('static', filename='player_images/' ~ player['Image']|lower) }}"
-          alt="{{ player['Player'] }} Image"
-          class="card-img-top"
-        />
-
-        <div class="card-body">
-          <h2>{{ player.Player }}</h2>
-          <p><strong>Matches:</strong> {{ player.Matches }}</p>
-          <p><strong>Innings:</strong> {{ player.Innings }}</p>
-          <p><strong>Runs:</strong> {{ player.Runs }}</p>
-          <p><strong>Wickets:</strong> {{ player.Wickets }}</p>
-          <p><strong>Batting Average:</strong> {{ player.Batting_Average }}</p>
-          <p><strong>Bowling Average:</strong> {{ player.Bowling_Average }}</p>
-          <p><strong>Strike Rate:</strong> {{ player.Strike_Rate }}</p>
-          <p><strong>Economy Rate:</strong> {{ player.Economy_Rate }}</p>
+            <li class="nav-item">
+              <a class="nav-link" href="#analysis">Analysis</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Videos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">News</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">More</a>
+            </li>
+          </ul>
         </div>
       </div>
-      <!-- End of player stats -->
-
-      <a href="/analysis" class="btn btn-primary mt-3">Back</a>
+    </nav>
+    <div class="container1 pt-4 mt-5">
+      <h1>Player Info</h1>
+      <section class="playerHeroSection">
+        <!-- Your hero section code -->
+        <div class="container">
+          <div class="td-block-row">
+            <div class="td-block-span12">
+              <div class="row v-align">
+                <div
+                  class="col-md-4 playerHeroSectionBlock p-3"
+                  itemprop="image"
+                >
+                  <img
+                    src="{{ url_for('static', filename='player_images/' ~
+                  player['Image']|lower) }}"
+                    alt="{{ player['Player'] }} Image"
+                    class="card-img-top entry-thumb img-thumbnail rounded-circle"
+                  />
+                </div>
+                <div class="col-md-8 hidden-sm playerHeroInfoBlock">
+                  <div class="row">
+                    <div class="col-md-4 col-sm-12">
+                      <div class="box pad-20">
+                        <h3
+                          itemprop="name"
+                          style="margin: 0"
+                          class="PlayerName"
+                        >
+                          {{ player.Player }}
+                        </h3>
+                        <div class="hidden-xs">
+                          <p style="margin: 0">Batter</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12 hidden-xs">
+                      <div class="box pad-20">
+                        <p style="margin: 0">Country</p>
+                        <h5
+                          itemprop="nationality"
+                          itemscope=""
+                          itemtype="https://schema.org/Country"
+                          style="margin: 0"
+                        >
+                          Nepal
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <main class="container1">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="chs__nav">
+              <nav>
+                <ul>
+                  <li role="presentation" class="active">
+                    <a href="#">Overview</a>
+                  </li>
+                  <li role="presentation"><a href="#">Profile</a></li>
+                  <li role="presentation"><a href="#">News</a></li>
+                  <li role="presentation"><a href="#">Team</a></li>
+                  <li role="presentation"><a href="#">Photos</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </main>
+      <section class="playerSingle">
+        <div class="container">
+          <div
+            class="row profile"
+            itemscope=""
+            itemtype="http://schema.org/person"
+          >
+            <div class="col-md-12 pad-t-20 pad-b-20">
+              <div class="row">
+                <div class="col-md-4 col-sm-12 mt-1 mb-1">
+                  <div class="box pad-20">
+                    <p style="margin: 0">Full Name</p>
+                    <h3 itemprop="name">{{ player.Player }}</h3>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-12 mt-1 mb-1">
+                  <div class="box pad-20">
+                    <p style="margin: 0">Age</p>
+                    <h3 itemprop="birthdate">20y 350d</h3>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-12 mt-1 mb-1">
+                  <div class="box pad-20">
+                    <p style="margin: 0">Born</p>
+                    <h3 itemprop="birthdate">September 2, 2002, Nawalparasi</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 col-sm-12 mt-1 mb-1">
+                  <div class="box pad-20">
+                    <p style="margin: 0">Batting Style</p>
+                    <h3>Right-hand bat</h3>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-12 mt-1 mb-1">
+                  <div class="box pad-20">
+                    <p style="margin: 0">Bowling Style</p>
+                    <h3>Right-arm medium</h3>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-12 mt-1 mb-1">
+                  <div class="box pad-20">
+                    <p style="margin: 0">Playing Role</p>
+                    <h3>Bowler</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-3 mb-3">
+                <div class="col-md-12">
+                  <h3>Stats</h3>
+                  <div class="row">
+                    <div class="card-body">
+                      <p><strong>Matches:</strong> {{ player.Matches }}</p>
+                      <p><strong>Innings:</strong> {{ player.Innings }}</p>
+                      <p><strong>Runs:</strong> {{ player.Runs }}</p>
+                      <p><strong>Wickets:</strong> {{ player.Wickets }}</p>
+                      <p>
+                        <strong>Batting Average:</strong> {{
+                        player.Batting_Average }}
+                      </p>
+                      <p>
+                        <strong>Bowling Average:</strong> {{
+                        player.Bowling_Average }}
+                      </p>
+                      <p>
+                        <strong>Strike Rate:</strong> {{ player.Strike_Rate }}
+                      </p>
+                      <p>
+                        <strong>Economy Rate:</strong> {{ player.Economy_Rate }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-3 mb-3">
+                <div class="col-md-12">
+                  <h3>Major Teams</h3>
+                  <div class="row">
+                    <div class="row">
+                      <div class="col-md-3 col mt-1 mb-1">
+                        <div
+                          class="box pad-20 team_bgcolor text-center"
+                          style="background-color: #002c87; width: 200px"
+                        >
+                          <img
+                            width="120"
+                            height="80"
+                            src="https://cricnepal-media.s3.ap-south-1.amazonaws.com/assets/Nepal-Cricket-team-Flag-150x100.webp"
+                            class="attachment-120x90 size-120x90 wp-post-image"
+                            alt="Nepal"
+                            decoding="async"
+                            srcset="
+                              https://cricnepal-media.s3.ap-south-1.amazonaws.com/assets/Nepal-Cricket-team-Flag.webp         500w,
+                              https://cricnepal-media.s3.ap-south-1.amazonaws.com/assets/Nepal-Cricket-team-Flag-150x100.webp 150w,
+                              https://cricnepal-media.s3.ap-south-1.amazonaws.com/assets/Nepal-Cricket-team-Flag-300x200.webp 300w
+                            "
+                            sizes="(max-width: 120px) 100vw, 120px"
+                          />
+                          <h3 class="font-16">
+                            <a
+                              style="color: #ffffff"
+                              href="https://www.cricnepal.com/team/nepal"
+                              >Nepal</a
+                            >
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </body>
 </html>

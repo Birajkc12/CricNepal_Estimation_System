@@ -3,6 +3,11 @@
   <head>
     <title>CricNepal Estimation System</title>
     <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='Images/bat.png') }}"
+    />
+    <link
       rel="stylesheet"
       href="{{ url_for('static', filename='styles.css') }}"
     />
@@ -69,8 +74,13 @@
         </div>
       </div>
     </nav>
-
-    <section class="pt-4 mt-5">
+    <!-- Live Score Ticker -->
+    <div class="live-score-ticker pt-4 mt-5">
+      <marquee behavior="scroll" direction="left">
+        ACC confirms the venue and tournament date for Asia Cup
+      </marquee>
+    </div>
+    <section class="">
       <iframe
         src="https://bwidget.crictimes.org/"
         style="width: 100%; min-height: 250px"
@@ -90,8 +100,9 @@
           />
           <div class="carousel-overlay"></div>
           <div class="carousel-caption cc1">
-            <h3>Slider Headline 1</h3>
-            <p>Slider description or additional text</p>
+            <h3>
+              Nepal ends Emerging Teams Asia Cup <br />with a victory over UAE
+            </h3>
           </div>
         </div>
         <div class="carousel-item">
@@ -102,8 +113,7 @@
           />
           <div class="carousel-overlay"></div>
           <div class="carousel-caption cc1">
-            <h3>Slider Headline 2</h3>
-            <p>Slider description or additional text</p>
+            <h3>Nepal suffers a nine-wicket <br />defeat against India A</h3>
           </div>
         </div>
         <!-- Add more carousel items as needed -->
@@ -164,6 +174,13 @@
             </thead>
             <tbody id="rankings-body">
               <!-- Rankings will be dynamically populated here -->
+              {% for team in ranking_data %}
+              <tr>
+                <td>{{ team.rank }}</td>
+                <td>{{ team.team }}</td>
+                <td>{{ team.points }}</td>
+              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
@@ -233,7 +250,6 @@
         </ul>
       </div>
     </aside>
-
     <footer class="footer">
       <div class="container">
         <p>&copy; 2023 CricNepal Estimation System. All rights reserved.</p>

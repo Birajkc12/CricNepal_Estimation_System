@@ -1,109 +1,117 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>CricNepal Estimation System - Player Prediction</title>
+    <title>CricNepal Estimation System: Player Prediction</title>
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     />
-    <style>
-      body {
-        background-color: #f8f9fa;
-        padding-top: 50px;
-      }
-      .container {
-        max-width: 800px;
-        margin: 0 auto;
-      }
-      header {
-        text-align: center;
-        padding: 20px 0;
-        background-color: #333;
-        color: #fff;
-      }
-      h2 {
-        margin-top: 40px;
-      }
-      .form-group {
-        margin-bottom: 20px;
-      }
-      .btn-primary {
-        margin-top: 20px;
-      }
-      .alert {
-        margin-top: 40px;
-      }
-    </style>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <style></style>
   </head>
   <body>
-    <header>
-      <h1>CricNepal Estimation System</h1>
-    </header>
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="/">
+          <img
+            src="{{ url_for('static', filename='player_images/CricNepal Logo.png') }}"
+            alt="CricNepal Logo"
+            class="logo"
+          />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#ranking">ICC Ranking</a>
+            </li>
 
-    <div class="container">
-      <h2>Player Performance Prediction</h2>
-      <form action="/predict" method="POST">
-        <div class="form-group">
-          <label for="matches">Matches:</label>
-          <input
-            type="number"
-            class="form-control"
-            id="matches"
-            name="matches"
-            required
-          />
+            <li class="nav-item">
+              <a class="nav-link" href="#analysis">Analysis</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Videos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">News</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">More</a>
+            </li>
+          </ul>
         </div>
-        <div class="form-group">
-          <label for="innings">Innings:</label>
-          <input
-            type="number"
-            class="form-control"
-            id="innings"
-            name="innings"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="runs">Runs:</label>
-          <input
-            type="number"
-            class="form-control"
-            id="runs"
-            name="runs"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="wickets">Wickets:</label>
-          <input
-            type="number"
-            class="form-control"
-            id="wickets"
-            name="wickets"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="balls_faced">Balls Faced:</label>
-          <input
-            type="number"
-            class="form-control"
-            id="balls_faced"
-            name="balls_faced"
-            required
-          />
-        </div>
-        <button type="submit" class="btn btn-primary">Predict</button>
-      </form>
-
-      {% if prediction %}
-      <div class="alert alert-success" role="alert">
-        <h4 class="alert-heading">Prediction Result:</h4>
-        <p>The player is predicted to have {{ prediction }} performance.</p>
       </div>
-      {% endif %}
-    </div>
+    </nav>
 
+    <section id="prediction" class="section mt-5">
+      <div class="container">
+        <h2 class="section-title">
+          <a href="/prediction" style="text-decoration: none"
+            >Match Prediction</a
+          >
+        </h2>
+        <div class="section-content">
+          <form action="/predict" method="post">
+            <div class="form-group">
+              <label for="opponent">Opponent:</label>
+              <input
+                type="text"
+                id="opponent"
+                name="opponent"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="location">Location:</label>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="toss_winner">Toss Winner:</label>
+              <input
+                type="text"
+                id="toss_winner"
+                name="toss_winner"
+                class="form-control"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Predict</button>
+          </form>
+        </div>
+        {% if prediction %}
+        <div class="section-content prediction-result">
+          <h3>Prediction Result:</h3>
+          <p>{{ prediction }}</p>
+        </div>
+        {% endif %}
+      </div>
+    </section>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   </body>
 </html>

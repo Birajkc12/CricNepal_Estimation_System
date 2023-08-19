@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Player Comparison - CricNepal Estimation System</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+    <style></style>
+  </head>
+  <body>
+    <h1>Player Comparison</h1>
+    <h2>{{ player1.Player }} vs {{ player2.Player }}</h2>
+    <table>
+      <tr>
+        <th>Stat</th>
+        <th>{{ player1.Player }}</th>
+        <th>{{ player2.Player }}</th>
+      </tr>
+      <tr>
+        <td>Batting Average</td>
+        <td>{{ player1.Batting_Average }}</td>
+        <td>{{ player2.Batting_Average }}</td>
+      </tr>
+      <tr>
+        <td>Bowling Average</td>
+        <td>{{ player1.Bowling_Average }}</td>
+        <td>{{ player2.Bowling_Average }}</td>
+      </tr>
+      <tr>
+        <td>Runs</td>
+        <td>{{ player1.Runs }}</td>
+        <td>{{ player2.Runs }}</td>
+      </tr>
+      <tr>
+        <td>Wickets</td>
+        <td>{{ player1.Wickets }}</td>
+        <td>{{ player2.Wickets }}</td>
+      </tr>
+      <!-- Add more stats as needed -->
+    </table>
+
+    <!-- New section for recommendations -->
+    {% if recommendations %}
+    <div class="recommendations">
+      <h2>Recommendations</h2>
+      <!-- Display player selection recommendations, batting order suggestions, etc. -->
+    </div>
+    {% endif %}
+
+    <div class="form-container">
+      <h2>Select Players for Comparison</h2>
+      <form action="/compare" method="POST">
+        <div class="form-group">
+          <label for="player1">Select Player 1:</label>
+          <select class="form-control" id="player1" name="player1">
+            {% for player in players %}
+            <option value="{{ player.Player }}">{{ player.Player }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="player2">Select Player 2:</label>
+          <select class="form-control" id="player2" name="player2">
+            {% for player in players %}
+            <option value="{{ player.Player }}">{{ player.Player }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Compare Players</button>
+      </form>
+    </div>
+
+    <div class="form-container">
+      <h2>Match Scenario</h2>
+      <form action="/analyze" method="POST">
+        <div class="form-group">
+          <label for="player">Select Player:</label>
+          <select class="form-control" id="player" name="player">
+            {% for player in players %}
+            <option value="{{ player.Player }}">{{ player.Player }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="pitch_type">Pitch Type:</label>
+          <select class="form-control" id="pitch_type" name="pitch_type">
+            <option value="Flat">Flat</option>
+            <option value="Green">Green</option>
+            <!-- Add more pitch type options as needed -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="weather">Weather Conditions:</label>
+          <select class="form-control" id="weather" name="weather">
+            <option value="Sunny">Sunny</option>
+            <option value="Rainy">Rainy</option>
+            <!-- Add more weather options as needed -->
+          </select>
+        </div>
+        <!-- Add more input fields as needed -->
+        <!-- ... (existing code) ... -->
+
+        <div class="form-group">
+          <label for="algorithm">Select Prediction Algorithm:</label>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="algorithm"
+              id="linear"
+              value="linear"
+              checked
+            />
+            <label class="form-check-label" for="linear">
+              Linear Regression
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="algorithm"
+              id="decision-tree"
+              value="decision_tree"
+            />
+            <label class="form-check-label" for="decision-tree">
+              Decision Tree
+            </label>
+          </div>
+        </div>
+
+        <!-- ... (existing code) ... -->
+        <button type="submit" class="btn btn-primary">
+          Analyze Performance
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

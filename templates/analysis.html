@@ -35,16 +35,11 @@
       .card-body {
         gap: 10px;
       }
-      .round {
-        border: 1px solid #03bfcb;
-        border-radius: 50%;
-        padding: 7px;
-      }
       .card {
-        background-color: #231e39;
+        background-color: #e6ebee; /* Updated background color */
         border-radius: 5px;
         box-shadow: 0px 10px 20px -10px rgba(0, 0, 0, 0.75);
-        color: #b3b8cd;
+        color: #333333; /* Updated text color */
         padding-top: 30px;
         position: relative;
         width: 350px;
@@ -53,6 +48,74 @@
         height: 350px;
         margin-bottom: 50px;
       }
+      /* Navigation and Header */
+  .navbar-nav .nav-link:hover {
+    color: #d1252b;
+  }
+
+  /* Search Form */
+  .form-group {
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  #searchInput {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  .btn-primary {
+    background-color: #d1252b;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .btn-primary:hover {
+    background-color: #9d1c20;
+  }
+
+  /* Player Cards */
+  .player-card {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #f8f9fd; /* Updated background color */
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  /* Table Styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  th,
+  td {
+    padding: 15px;
+    text-align: center;
+  }
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+  }
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  tr:hover {
+    background-color: #e0e0e0;
+  }
+
+  /* Chart Styling */
+  .chart-container {
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 50px;
+  }
     </style>
   </head>
   <body>
@@ -144,6 +207,7 @@
           {% endfor %}
         </div>
 
+        <!-- Above-Average Batting Players -->
         <h2>Players with Above-Average Batting Average</h2>
         <table class="table">
           <thead>
@@ -164,6 +228,7 @@
           </tbody>
         </table>
 
+        <!-- Above-Average Bowling Players -->
         <h2>Players with Above-Average Bowling Average</h2>
         <table class="table">
           <thead>
@@ -186,13 +251,65 @@
       </div>
 
       <div class="chart-container">
+        <!-- Batting Average Distribution Chart -->
         <h2>Batting Average Distribution</h2>
         <canvas id="battingChart"></canvas>
 
+        <!-- Bowling Average Distribution Chart -->
         <h2>Bowling Average Distribution</h2>
         <canvas id="bowlingChart"></canvas>
       </div>
     </div>
+
+
+     <!-- Ranking Section -->
+  <section class="container">
+  <h2 id="ranking">ICC Ranking</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Player</th>
+        <th>Team</th>
+        <th>Points</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for player in icc_ranking %}
+      <tr>
+        <td>{{ player.Rank }}</td>
+        <td>{{ player.Player }}</td>
+        <td>{{ player.Team }}</td>
+        <td>{{ player.Points }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Player Comparison Section -->
+  <h2>Player Comparison</h2>
+  <form action="/compare" method="POST">
+    <div class="form-group">
+      <label for="player1">Select Player 1:</label>
+      <select class="form-control" id="player1" name="player1">
+        {% for player in players %}
+        <option value="{{ player.Player }}">{{ player.Player }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="player2">Select Player 2:</label>
+      <select class="form-control" id="player2" name="player2">
+        {% for player in players %}
+        <option value="{{ player.Player }}">{{ player.Player }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Compare Players</button>
+  </form>
+</div>
+</section>  
+
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -221,7 +338,7 @@
         .getElementById("searchInput")
         .addEventListener("input", filterPlayers);
 
-      // Chart.js configuration
+      // Initialize batting chart
       var battingData = {
         labels: [{% for player in players %}"{{ player.Player }}",{% endfor %}],
         datasets: [
