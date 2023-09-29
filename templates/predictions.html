@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Match Prediction</title>
+  </head>
+  <body>
+    <h1>Cricket Match Prediction</h1>
+
+    <form method="POST" action="/predictions">
+      <label for="teamB">Opposing Team:</label>
+      <input type="text" id="teamB" name="teamB" required />
+      <br />
+      <!-- "teamA" is fixed to "Nepal" -->
+      <input type="hidden" id="teamA" name="teamA" value="Nepal" />
+      <br />
+      <input type="submit" value="Predict" />
+    </form>
+
+    {% if prediction %}
+    <h2>Prediction Result:</h2>
+    <p>{{ prediction }}</p>
+    {% endif %}
+
+    <a href="/">Back to Home</a>
+  </body>
+</html>

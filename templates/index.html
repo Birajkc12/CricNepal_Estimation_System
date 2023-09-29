@@ -62,13 +62,13 @@
               <a class="nav-link" href="#">Videos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">News</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="#about">About</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">More</a>
+              <a class="nav-link" href="/predictions">Predictions</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/sample_data">More</a>
             </li>
           </ul>
         </div>
@@ -139,28 +139,6 @@
     </div>
 
     <main>
-      <section id="about" class="section">
-        <div class="container mt-5">
-          <h2 class="section-title">About the Nepali Cricket Team</h2>
-          <div class="section-content">
-            <p>
-              The Nepali cricket team represents Nepal in international cricket.
-              Over the years, the team has shown great potential and achieved
-              notable success in the cricketing world. With a passionate fan
-              base and talented players, Nepal is making its mark in the
-              international cricketing arena.
-            </p>
-            <p>
-              The team has participated in various tournaments and played
-              against top cricketing nations. They have displayed remarkable
-              performances, creating moments of pride and joy for the nation.
-              The team's journey has been full of ups and downs, but they
-              continue to work hard and strive for excellence.
-            </p>
-          </div>
-        </div>
-      </section>
-
       <section id="ranking" class="section">
         <div class="container">
           <h2 class="section-title">ICC Ranking</h2>
@@ -174,13 +152,6 @@
             </thead>
             <tbody id="rankings-body">
               <!-- Rankings will be dynamically populated here -->
-              {% for team in ranking_data %}
-              <tr>
-                <td>{{ team.rank }}</td>
-                <td>{{ team.team }}</td>
-                <td>{{ team.points }}</td>
-              </tr>
-              {% endfor %}
             </tbody>
           </table>
         </div>
@@ -189,7 +160,7 @@
       <section id="analysis" class="section">
         <div class="container">
           <h2 class="section-title">Analysis</h2>
-          <div class="section-content">
+          <div class="section-content-analysis">
             <p>
               Our CricNepal Estimation System provides in-depth analysis and
               insights for the Nepali cricket team. We analyze various aspects
@@ -217,9 +188,180 @@
           <div class="text-center">
             <a href="/analysis" class="btn btn-primary">Go to Analysis</a>
             <a href="/prediction" class="btn btn-primary">Go to Prediction</a>
+            <a href="/make_prediction" class="btn btn-primary"
+              >Sample Prediction</a
+            >
           </div>
         </div>
       </section>
+      <section id="about" class="section">
+        <div class="container mt-5">
+          <h2 class="section-title">About the Nepali Cricket</h2>
+          <div class="section-content-CAN">
+            <div>
+              <p>
+                The Nepali cricket team represents Nepal in international
+                cricket. Over the years, the team has shown great potential and
+                achieved notable success in the cricketing world. With a
+                passionate fan base and talented players, Nepal is making its
+                mark in the international cricketing arena.
+              </p>
+              <br />
+              <p>
+                The team has participated in various tournaments and played
+                against top cricketing nations. They have displayed remarkable
+                performances, creating moments of pride and joy for the nation.
+                The team's journey has been full of ups and downs, but they
+                continue to work hard and strive for excellence.
+              </p>
+            </div>
+            <div class="CAN-logo">
+              <img
+                src="{{ url_for('static', filename='player_images/CAN.png') }}"
+                alt="CAN Logo"
+                class="CANLogo"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+      <div><h1>Central Committee Members, CAN</h1></div>
+      <div class="committee container">
+        <div class="committee-info">
+          <div class="card mb-3" style="max-width: 540px">
+            <div class="row g-0">
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">Chatur Bahadur Chand</h5>
+
+                  <p class="card-text">
+                    <small class="text-body-secondary">President</small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="committee-info">
+          <div class="card mb-3" style="max-width: 540px">
+            <div class="row g-0">
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">Roshan Kumar Singh</h5>
+
+                  <p class="card-text">
+                    <small class="text-body-secondary">Vice-President</small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="committee-info">
+          <div class="card mb-3" style="max-width: 540px">
+            <div class="row g-0">
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">Paras Khadka</h5>
+
+                  <p class="card-text">
+                    <small class="text-body-secondary">Secretary</small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="committee-info">
+          <div class="card mb-3" style="max-width: 540px">
+            <div class="row g-0">
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">Padam Bahadur Khadka</h5>
+
+                  <p class="card-text">
+                    <small class="text-body-secondary">Treasurer</small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="committee-info">
+          <div class="card mb-3" style="max-width: 540px">
+            <div class="row g-0">
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">Jayanti Devi Bhatta</h5>
+
+                  <p class="card-text">
+                    <small class="text-body-secondary">Executive Member</small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="committee-info">
+          <div class="card mb-3" style="max-width: 540px">
+            <div class="row g-0">
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">Dhirendra Saud</h5>
+
+                  <p class="card-text">
+                    <small class="text-body-secondary">Executive Member </small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="committee-info">
+          <div class="card mb-3" style="max-width: 540px">
+            <div class="row g-0">
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">Durgaraj Pathak</h5>
+
+                  <p class="card-text">
+                    <small class="text-body-secondary">Executive Member</small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="committee-info">
+          <div class="card mb-3" style="max-width: 540px">
+            <div class="row g-0">
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">Ayush Shrestha</h5>
+
+                  <p class="card-text">
+                    <small class="text-body-secondary">Executive Member</small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="committee-info">
+          <div class="card mb-3" style="max-width: 540px">
+            <div class="row g-0">
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">Birendra Bahadur Chand</h5>
+                  <p class="card-text">
+                    <small class="text-body-secondary">Executive Member</small>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
 
     <aside class="aside">
@@ -255,5 +397,41 @@
         <p>&copy; 2023 CricNepal Estimation System. All rights reserved.</p>
       </div>
     </footer>
+    <!-- Add this script in your HTML file -->
+
+    <!-- Add this script in your HTML file -->
+    <script>
+      // ...
+      // Update the API URL to use the CORS Anywhere proxy
+
+      const apiUrl = "/fetch-icc-rankings"; // Use the correct route
+
+      async function updateICCRankings() {
+        try {
+          const response = await fetch(apiUrl);
+          const rankingData = await response.json();
+
+          // Clear the existing table rows
+          const tbody = document.getElementById("rankings-body");
+          tbody.innerHTML = "";
+
+          // Populate the table with the fetched data
+          rankingData.forEach((team) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                 <td>${team.rank}</td>
+                 <td>${team.team}</td>
+                 <td>${team.points}</td>
+      `;
+            tbody.appendChild(row);
+          });
+        } catch (error) {
+          console.error("Error fetching ICC rankings:", error);
+        }
+      }
+
+      // Call the function to update rankings when the page loads
+      window.addEventListener("load", updateICCRankings);
+    </script>
   </body>
 </html>

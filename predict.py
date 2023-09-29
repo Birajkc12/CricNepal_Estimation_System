@@ -14,9 +14,13 @@ data["Opponent"] = label_encoder.fit_transform(data["Opponent"])
 data["Location"] = label_encoder.fit_transform(data["Location"])
 data["Toss Winner"] = label_encoder.fit_transform(data["Toss Winner"])
 
+# Ensure that 'Unknown' label is replaced with 'Neutral' in y
+data["Result"].replace("Unknown", "Neutral", inplace=True)
+
 # Split the dataset into features and target
 X = data.drop(["Result", "Score"], axis=1)
-y = data["Result"]
+y = data["Result"].astype("category")
+y = y.cat.set_categories(["Victory", "Defeat", "Neutral"])
 
 # Split the dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(
@@ -35,20 +39,42 @@ clf.fit(X_train, y_train)
 
 # Function to calculate opponent's strength based on ICC rank
 def get_opponent_strength(opponent):
-    opponent_rank = label_encoder.transform([opponent])[0]
-    opponent_column = data.iloc[:, opponent_rank]
+    try:
+        opponent_rank = label_encoder.transform([opponent])[0]
+    except ValueError:
+        # Handle previously unseen opponents by setting rank to -1
+        opponent_rank = -1
 
-    # Exclude non-numeric values from the calculation
-    opponent_strength = opponent_column.loc[
-        opponent_column.apply(lambda x: pd.to_numeric(x, errors="coerce")).notna()
-    ].mean()
+    if opponent_rank != -1:
+        opponent_column = data.iloc[:, opponent_rank]
+
+        # Exclude non-numeric values from the calculation
+        opponent_strength = opponent_column.loc[
+            opponent_column.apply(lambda x: pd.to_numeric(x, errors="coerce")).notna()
+        ].mean()
+    else:
+        # Handle unseen opponents gracefully
+        opponent_strength = 0.0
 
     return opponent_strength
 
 
 # Function to calculate location factor based on Nepal's performance in that location
 def get_location_factor(location):
-    location_data = data[data["Location"] == label_encoder.transform([location])[0]]
+    if location not in label_encoder.classes_:
+        # Handle previously unseen location, e.g., assign it as "Unknown"
+        return 1.0  # Neutral factor when location is unknown
+
+    location_encoded = label_encoder.transform([location])[0]
+
+    location_data = data[data["Location"] == location_encoded]
+
+    # Handle the case when location_data is empty (unseen location)
+    if location_data.empty:
+        # You can assign a default value or take appropriate action here.
+        # For example, assigning a neutral factor:
+        return 1.0  # Neutral factor when location is unknown
+
     location_factor = location_data["Total Runs"].mean() / data["Total Runs"].mean()
     return location_factor
 
@@ -65,12 +91,21 @@ def make_prediction(opponent, location, toss_winner):
     if np.isnan(location_factor):
         location_factor = 0.0
 
+    # Handle previously unseen labels in y
+    if y.cat.categories.isin(["Victory", "Defeat", "Neutral"]).all():
+        # All labels are known, proceed with predictions
+        pass
+    else:
+        # Set previously unseen labels to 'Neutral'
+        y.cat.add_categories(["Neutral"], inplace=True)
+        y.fillna("Neutral", inplace=True)
+
     # Make predictions on new data
     new_data = pd.DataFrame(
         {
-            "Opponent": label_encoder.transform([opponent])[0],
-            "Location": label_encoder.transform([location])[0],
-            "Toss Winner": label_encoder.transform([toss_winner])[0],
+            "Opponent": [opponent_strength],
+            "Location": [location_factor],
+            "Toss Winner": [toss_winner_factor],
             "Total Runs": [data["Total Runs"].mean()],  # Add a placeholder value
             "Opponent_Strength": [opponent_strength],
             "Location_Factor": [location_factor],

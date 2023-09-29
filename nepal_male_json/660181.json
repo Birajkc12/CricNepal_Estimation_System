@@ -1,0 +1,1106 @@
+{
+  "meta": {
+    "data_version": "1.0.0",
+    "created": "2013-12-18",
+    "revision": 2
+  },
+  "info": {
+    "balls_per_over": 6,
+    "dates": [
+      "2013-11-22"
+    ],
+    "event": {
+      "group": "B",
+      "match_number": 45,
+      "name": "ICC World Twenty20 Qualifier"
+    },
+    "gender": "male",
+    "match_type": "IT20",
+    "officials": {
+      "match_referees": [
+        "DT Jukes"
+      ],
+      "reserve_umpires": [
+        "Sharfuddoula"
+      ],
+      "umpires": [
+        "JD Ward",
+        "JS Wilson"
+      ]
+    },
+    "outcome": {
+      "by": {
+        "wickets": 9
+      },
+      "winner": "Afghanistan"
+    },
+    "overs": 20,
+    "player_of_match": [
+      "Mohammad Shahzad"
+    ],
+    "players": {
+      "Afghanistan": [
+        "Mohammad Shahzad",
+        "Nawroz Mangal",
+        "Mohammad Nabi",
+        "Gulbadin Naib",
+        "Shapoor Zadran",
+        "Dawlat Zadran",
+        "Samiullah Shenwari",
+        "Mirwais Ashraf",
+        "Karim Sadiq",
+        "Najibullah Zadran",
+        "Shafiqullah"
+      ],
+      "Nepal": [
+        "SP Khakurel",
+        "Sagar Pun",
+        "P Khadka",
+        "G Malla",
+        "B Bhandari",
+        "PS Airee",
+        "S Vesawkar",
+        "A Bhattarai",
+        "B Regmi",
+        "JK Mukhiya",
+        "A Karn"
+      ]
+    },
+    "registry": {
+      "people": {
+        "A Bhattarai": "2c2013a9",
+        "A Karn": "357f5314",
+        "B Bhandari": "82342b13",
+        "B Regmi": "98d05440",
+        "DT Jukes": "7c215d14",
+        "Dawlat Zadran": "1fba2ae3",
+        "G Malla": "b2e1d224",
+        "Gulbadin Naib": "9f77963a",
+        "JD Ward": "511299c1",
+        "JK Mukhiya": "f8dcfe4e",
+        "JS Wilson": "d7f3b72f",
+        "Karim Sadiq": "13e5908b",
+        "Mirwais Ashraf": "bdd985f2",
+        "Mohammad Nabi": "62af8546",
+        "Mohammad Shahzad": "d6dcb0c9",
+        "Najibullah Zadran": "1212cbec",
+        "Nawroz Mangal": "0503ae22",
+        "P Khadka": "12c3ba4d",
+        "PS Airee": "cc18ba92",
+        "S Vesawkar": "3de06845",
+        "SP Khakurel": "9a6b71d1",
+        "Sagar Pun": "3c4007d3",
+        "Samiullah Shenwari": "61646132",
+        "Shafiqullah": "ba4d600a",
+        "Shapoor Zadran": "fccebff9",
+        "Sharfuddoula": "63896abb"
+      }
+    },
+    "season": "2013/14",
+    "team_type": "international",
+    "teams": [
+      "Afghanistan",
+      "Nepal"
+    ],
+    "toss": {
+      "decision": "field",
+      "winner": "Afghanistan"
+    },
+    "venue": "Sharjah Cricket Stadium"
+  },
+  "innings": [
+    {
+      "team": "Nepal",
+      "overs": [
+        {
+          "over": 0,
+          "deliveries": [
+            {
+              "batter": "SP Khakurel",
+              "bowler": "Shapoor Zadran",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Sagar Pun",
+              "bowler": "Shapoor Zadran",
+              "non_striker": "SP Khakurel",
+              "runs": {
+                "batter": 0,
+                "extras": 0,
+                "total": 0
+              }
+            },
+            {
+              "batter": "Sagar Pun",
+              "bowler": "Shapoor Zadran",
+              "non_striker": "SP Khakurel",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "SP Khakurel",
+              "bowler": "Shapoor Zadran",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 0,
+                "extras": 0,
+                "total": 0
+              }
+            },
+            {
+              "batter": "SP Khakurel",
+              "bowler": "Shapoor Zadran",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 0,
+                "extras": 0,
+                "total": 0
+              }
+            },
+            {
+              "batter": "SP Khakurel",
+              "bowler": "Shapoor Zadran",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            }
+          ]
+        },
+        {
+          "over": 1,
+          "deliveries": [
+            {
+              "batter": "SP Khakurel",
+              "bowler": "Dawlat Zadran",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 0,
+                "extras": 0,
+                "total": 0
+              }
+            },
+            {
+              "batter": "SP Khakurel",
+              "bowler": "Dawlat Zadran",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 4,
+                "extras": 0,
+                "total": 4
+              }
+            },
+            {
+              "batter": "SP Khakurel",
+              "bowler": "Dawlat Zadran",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 0,
+                "extras": 0,
+                "total": 0
+              }
+            },
+            {
+              "batter": "SP Khakurel",
+              "bowler": "Dawlat Zadran",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 6,
+                "extras": 0,
+                "total": 6
+              }
+            },
+            {
+              "batter": "SP Khakurel",
+              "bowler": "Dawlat Zadran",
+              "extras": {
+                "noballs": 1
+              },
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 1,
+                "extras": 1,
+                "total": 2
+              }
+            },
+            {
+              "batter": "Sagar Pun",
+              "bowler": "Dawlat Zadran",
+              "extras": {
+                "byes": 1
+              },
+              "non_striker": "SP Khakurel",
+              "runs": {
+                "batter": 0,
+                "extras": 1,
+                "total": 1
+              }
+            },
+            {
+              "batter": "SP Khakurel",
+              "bowler": "Dawlat Zadran",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 2,
+                "extras": 0,
+                "total": 2
+              }
+            }
+          ]
+        },
+        {
+          "over": 2,
+          "deliveries": [
+            {
+              "batter": "Sagar Pun",
+              "bowler": "Karim Sadiq",
+              "non_striker": "SP Khakurel",
+              "runs": {
+                "batter": 6,
+                "extras": 0,
+                "total": 6
+              }
+            },
+            {
+              "batter": "Sagar Pun",
+              "bowler": "Karim Sadiq",
+              "non_striker": "SP Khakurel",
+              "runs": {
+                "batter": 2,
+                "extras": 0,
+                "total": 2
+              }
+            },
+            {
+              "batter": "Sagar Pun",
+              "bowler": "Karim Sadiq",
+              "non_striker": "SP Khakurel",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "SP Khakurel",
+              "bowler": "Karim Sadiq",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 0,
+                "extras": 0,
+                "total": 0
+              }
+            },
+            {
+              "batter": "SP Khakurel",
+              "bowler": "Karim Sadiq",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Sagar Pun",
+              "bowler": "Karim Sadiq",
+              "non_striker": "SP Khakurel",
+              "runs": {
+                "batter": 6,
+                "extras": 0,
+                "total": 6
+              }
+            }
+          ]
+        },
+        {
+          "over": 3,
+          "deliveries": [
+            {
+              "batter": "SP Khakurel",
+              "bowler": "Mirwais Ashraf",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 0,
+                "extras": 0,
+                "total": 0
+              },
+              "wickets": [
+                {
+                  "kind": "bowled",
+                  "player_out": "SP Khakurel"
+                }
+              ]
+            },
+            {
+              "batter": "P Khadka",
+              "bowler": "Mirwais Ashraf",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 2,
+                "extras": 0,
+                "total": 2
+              }
+            },
+            {
+              "batter": "P Khadka",
+              "bowler": "Mirwais Ashraf",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Sagar Pun",
+              "bowler": "Mirwais Ashraf",
+              "non_striker": "P Khadka",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "P Khadka",
+              "bowler": "Mirwais Ashraf",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Sagar Pun",
+              "bowler": "Mirwais Ashraf",
+              "non_striker": "P Khadka",
+              "runs": {
+                "batter": 0,
+                "extras": 0,
+                "total": 0
+              }
+            }
+          ]
+        },
+        {
+          "over": 4,
+          "deliveries": [
+            {
+              "batter": "P Khadka",
+              "bowler": "Shapoor Zadran",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 0,
+                "extras": 0,
+                "total": 0
+              },
+              "wickets": [
+                {
+                  "kind": "caught",
+                  "player_out": "P Khadka",
+                  "fielders": [
+                    {
+                      "name": "Shafiqullah"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "batter": "Sagar Pun",
+              "bowler": "Shapoor Zadran",
+              "non_striker": "G Malla",
+              "runs": {
+                "batter": 2,
+                "extras": 0,
+                "total": 2
+              }
+            },
+            {
+              "batter": "Sagar Pun",
+              "bowler": "Shapoor Zadran",
+              "non_striker": "G Malla",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "G Malla",
+              "bowler": "Shapoor Zadran",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Sagar Pun",
+              "bowler": "Shapoor Zadran",
+              "non_striker": "G Malla",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "G Malla",
+              "bowler": "Shapoor Zadran",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 2,
+                "extras": 0,
+                "total": 2
+              }
+            }
+          ]
+        },
+        {
+          "over": 5,
+          "deliveries": [
+            {
+              "batter": "Sagar Pun",
+              "bowler": "Mirwais Ashraf",
+              "non_striker": "G Malla",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "G Malla",
+              "bowler": "Mirwais Ashraf",
+              "non_striker": "Sagar Pun",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Sagar Pun",
+              "bowler": "Mirwais Ashraf",
+              "non_striker": "G Malla",
+              "runs": {
+                "batter": 0,
+                "extras": 0,
+                "total": 0
+              },
+              "wickets": [
+                {
+                  "kind": "bowled",
+                  "player_out": "Sagar Pun"
+                }
+              ]
+            },
+            {
+              "batter": "B Bhandari",
+              "bowler": "Mirwais Ashraf",
+              "non_striker": "G Malla",
+              "runs": {
+                "batter": 4,
+                "extras": 0,
+                "total": 4
+              }
+            },
+            {
+              "batter": "B Bhandari",
+              "bowler": "Mirwais Ashraf",
+              "non_striker": "G Malla",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "G Malla",
+              "bowler": "Mirwais Ashraf",
+              "non_striker": "B Bhandari",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            }
+          ]
+        },
+        {
+          "over": 6,
+          "deliveries": [
+            {
+              "batter": "G Malla",
+              "bowler": "Mohammad Nabi",
+              "non_striker": "B Bhandari",
+              "runs": {
+                "batter": 4,
+                "extras": 0,
+                "total": 4
+              }
+            },
+            {
+              "batter": "G Malla",
+              "bowler": "Mohammad Nabi",
+              "non_striker": "B Bhandari",
+              "runs": {
+                "batter": 6,
+                "extras": 0,
+                "total": 6
+              }
+            },
+            {
+              "batter": "G Malla",
+              "bowler": "Mohammad Nabi",
+              "non_striker": "B Bhandari",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "B Bhandari",
+              "bowler": "Mohammad Nabi",
+              "non_striker": "G Malla",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "G Malla",
+              "bowler": "Mohammad Nabi",
+              "non_striker": "B Bhandari",
+              "runs": {
+                "batter": 6,
+                "extras": 0,
+                "total": 6
+              }
+            },
+            {
+              "batter": "G Malla",
+              "bowler": "Mohammad Nabi",
+              "non_striker": "B Bhandari",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            }
+          ]
+        }
+      ],
+      "powerplays": [
+        {
+          "from": 0.1,
+          "to": 5.6,
+          "type": "mandatory"
+        }
+      ]
+    },
+    {
+      "team": "Afghanistan",
+      "overs": [
+        {
+          "over": 0,
+          "deliveries": [
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "JK Mukhiya",
+              "non_striker": "Nawroz Mangal",
+              "runs": {
+                "batter": 4,
+                "extras": 0,
+                "total": 4
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "JK Mukhiya",
+              "extras": {
+                "byes": 1
+              },
+              "non_striker": "Nawroz Mangal",
+              "runs": {
+                "batter": 0,
+                "extras": 1,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Nawroz Mangal",
+              "bowler": "JK Mukhiya",
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 6,
+                "extras": 0,
+                "total": 6
+              }
+            },
+            {
+              "batter": "Nawroz Mangal",
+              "bowler": "JK Mukhiya",
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 4,
+                "extras": 0,
+                "total": 4
+              }
+            },
+            {
+              "batter": "Nawroz Mangal",
+              "bowler": "JK Mukhiya",
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "JK Mukhiya",
+              "non_striker": "Nawroz Mangal",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            }
+          ]
+        },
+        {
+          "over": 1,
+          "deliveries": [
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "A Bhattarai",
+              "non_striker": "Nawroz Mangal",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Nawroz Mangal",
+              "bowler": "A Bhattarai",
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "A Bhattarai",
+              "non_striker": "Nawroz Mangal",
+              "runs": {
+                "batter": 4,
+                "extras": 0,
+                "total": 4
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "A Bhattarai",
+              "non_striker": "Nawroz Mangal",
+              "runs": {
+                "batter": 0,
+                "extras": 0,
+                "total": 0
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "A Bhattarai",
+              "non_striker": "Nawroz Mangal",
+              "runs": {
+                "batter": 6,
+                "extras": 0,
+                "total": 6
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "A Bhattarai",
+              "non_striker": "Nawroz Mangal",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            }
+          ]
+        },
+        {
+          "over": 2,
+          "deliveries": [
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "B Regmi",
+              "non_striker": "Nawroz Mangal",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Nawroz Mangal",
+              "bowler": "B Regmi",
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "B Regmi",
+              "non_striker": "Nawroz Mangal",
+              "runs": {
+                "batter": 0,
+                "extras": 0,
+                "total": 0
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "B Regmi",
+              "non_striker": "Nawroz Mangal",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Nawroz Mangal",
+              "bowler": "B Regmi",
+              "extras": {
+                "wides": 1
+              },
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 0,
+                "extras": 1,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Nawroz Mangal",
+              "bowler": "B Regmi",
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 4,
+                "extras": 0,
+                "total": 4
+              }
+            },
+            {
+              "batter": "Nawroz Mangal",
+              "bowler": "B Regmi",
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            }
+          ]
+        },
+        {
+          "over": 3,
+          "deliveries": [
+            {
+              "batter": "Nawroz Mangal",
+              "bowler": "A Karn",
+              "extras": {
+                "wides": 1
+              },
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 0,
+                "extras": 1,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Nawroz Mangal",
+              "bowler": "A Karn",
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "A Karn",
+              "non_striker": "Nawroz Mangal",
+              "runs": {
+                "batter": 0,
+                "extras": 0,
+                "total": 0
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "A Karn",
+              "extras": {
+                "wides": 1
+              },
+              "non_striker": "Nawroz Mangal",
+              "runs": {
+                "batter": 0,
+                "extras": 1,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "A Karn",
+              "non_striker": "Nawroz Mangal",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Nawroz Mangal",
+              "bowler": "A Karn",
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "A Karn",
+              "non_striker": "Nawroz Mangal",
+              "runs": {
+                "batter": 4,
+                "extras": 0,
+                "total": 4
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "A Karn",
+              "non_striker": "Nawroz Mangal",
+              "runs": {
+                "batter": 2,
+                "extras": 0,
+                "total": 2
+              }
+            }
+          ]
+        },
+        {
+          "over": 4,
+          "deliveries": [
+            {
+              "batter": "Nawroz Mangal",
+              "bowler": "P Khadka",
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 2,
+                "extras": 0,
+                "total": 2
+              }
+            },
+            {
+              "batter": "Nawroz Mangal",
+              "bowler": "P Khadka",
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 0,
+                "extras": 0,
+                "total": 0
+              },
+              "wickets": [
+                {
+                  "kind": "caught",
+                  "player_out": "Nawroz Mangal",
+                  "fielders": [
+                    {
+                      "name": "Sagar Pun"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "P Khadka",
+              "non_striker": "Mohammad Nabi",
+              "runs": {
+                "batter": 0,
+                "extras": 0,
+                "total": 0
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "P Khadka",
+              "non_striker": "Mohammad Nabi",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Mohammad Nabi",
+              "bowler": "P Khadka",
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 0,
+                "extras": 0,
+                "total": 0
+              }
+            },
+            {
+              "batter": "Mohammad Nabi",
+              "bowler": "P Khadka",
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 6,
+                "extras": 0,
+                "total": 6
+              }
+            }
+          ]
+        },
+        {
+          "over": 5,
+          "deliveries": [
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "JK Mukhiya",
+              "non_striker": "Mohammad Nabi",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Mohammad Nabi",
+              "bowler": "JK Mukhiya",
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "JK Mukhiya",
+              "non_striker": "Mohammad Nabi",
+              "runs": {
+                "batter": 2,
+                "extras": 0,
+                "total": 2
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "JK Mukhiya",
+              "non_striker": "Mohammad Nabi",
+              "runs": {
+                "batter": 6,
+                "extras": 0,
+                "total": 6
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "JK Mukhiya",
+              "non_striker": "Mohammad Nabi",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Mohammad Nabi",
+              "bowler": "JK Mukhiya",
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 1,
+                "extras": 0,
+                "total": 1
+              }
+            }
+          ]
+        },
+        {
+          "over": 6,
+          "deliveries": [
+            {
+              "batter": "Mohammad Nabi",
+              "bowler": "B Regmi",
+              "extras": {
+                "byes": 1
+              },
+              "non_striker": "Mohammad Shahzad",
+              "runs": {
+                "batter": 0,
+                "extras": 1,
+                "total": 1
+              }
+            },
+            {
+              "batter": "Mohammad Shahzad",
+              "bowler": "B Regmi",
+              "non_striker": "Mohammad Nabi",
+              "runs": {
+                "batter": 6,
+                "extras": 0,
+                "total": 6
+              }
+            }
+          ]
+        }
+      ],
+      "powerplays": [
+        {
+          "from": 0.1,
+          "to": 5.6,
+          "type": "mandatory"
+        }
+      ],
+      "target": {
+        "overs": 7,
+        "runs": 74
+      }
+    }
+  ]
+}

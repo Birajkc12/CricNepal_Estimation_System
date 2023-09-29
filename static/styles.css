@@ -296,3 +296,31 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+.section-content--CAN {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+.CAN-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.CANLogo {
+  width: 20rem;
+  height: auto;
+}
+.committee {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
+}
+.committee-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

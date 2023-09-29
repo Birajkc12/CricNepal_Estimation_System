@@ -1,4 +1,13 @@
-from flask import Flask, render_template, request, session, redirect
+from flask import (
+    Flask,
+    render_template,
+    request,
+    session,
+    redirect,
+    send_from_directory,
+    jsonify,
+)
+import requests
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
 
@@ -13,18 +22,23 @@ import os
 import pickle
 import csv
 import joblib
+import json
+import prediction_module
 from predict import make_prediction
-
+from prediction_model import MatchPredictionModel
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.secret_key = "64131316905e8dea79bc77eda222e351"
+CORS(app)  # Enable CORS for your Flask app
+
 
 # Load the dataset
 data = pd.read_csv("player_performance.csv")
 
-data["Image"] = data["Player"].str.replace(" ", "_") + ".jpg"
 
 # Calculate additional metrics
+data["Image"] = data["Player"].str.replace(" ", "_") + ".jpg"
 data["Above_Avg_Batting"] = data["Batting_Average"] > data["Batting_Average"].mean()
 data["Above_Avg_Bowling"] = data["Bowling_Average"] > data["Bowling_Average"].mean()
 
@@ -294,12 +308,8 @@ def upload():
     return "File uploaded successfully"
 
 
-import pandas as pd
-
 # Load the initial dataset from the CSV file
 data = pd.read_csv("player_performance.csv")
-
-# ... other code ...
 
 
 @app.route("/admin/delete", methods=["POST"])
@@ -329,61 +339,6 @@ data = pd.read_csv("player_performance.csv")
 data.fillna(0, inplace=True)  # Replace NaN values with 0
 
 
-# # Route for prediction
-# @app.route("/predict", methods=["POST"])
-# def predict():
-#     # Retrieve the form data
-#     matches = int(request.form["matches"])
-#     innings = int(request.form["innings"])
-#     runs = int(request.form["runs"])
-#     wickets = int(request.form["wickets"])
-#     balls_faced = int(request.form["balls_faced"])
-
-#     # Prepare the data for training
-#     X = data[
-#         [
-#             "Matches",
-#             "Innings",
-#             "Runs",
-#             "Wickets",
-#             "Batting_Average",
-#             "Bowling_Average",
-#             "Strike_Rate",
-#             "Economy_Rate",
-#         ]
-#     ]
-
-#     try:
-#         y = data[
-#             "Above_Avg_Batting"
-#         ]  # Replace "Above_Avg_Batting" with the actual target variable column name
-#     except KeyError as e:
-#         return f"Error: {e}. Please check the column name for the target variable in your dataset."
-
-#     # Train the linear regression model
-#     model = LinearRegression()
-#     model.fit(X, y)
-
-#     # Save the trained model
-#     joblib.dump(model, "trained_model.pkl")
-
-#     # Perform the prediction
-#     model = joblib.load("trained_model.pkl")  # Load the trained model
-
-#     X_input = [
-#         [matches, innings, runs, wickets, balls_faced]
-#     ]  # Format the input features
-
-#     try:
-#         y_pred = model.predict(X_input)  # Make the prediction
-#     except Exception as e:
-#         return f"Error occurred during prediction: {e}"
-
-#     # Format and return the prediction result
-#     prediction_result = f"The predicted value is: {y_pred[0]}"
-#     return render_template("prediction.html", prediction=prediction_result)
-
-
 # Route for the prediction
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -391,6 +346,7 @@ def predict():
     location = request.form["location"]
     toss_winner = request.form["toss_winner"]
 
+    # Use the make_prediction function from predict.py
     prediction = make_prediction(opponent, location, toss_winner)
 
     return render_template("prediction.html", prediction=prediction)
@@ -404,10 +360,6 @@ def load_player_data(filename):
         for row in csv_reader:
             players.append(row)
     return players
-
-
-# Load ICC ranking data from a similar CSV file if needed
-# icc_ranking = ...
 
 
 # Route for the player comparison page
@@ -438,11 +390,6 @@ def compare_players():
 
     # If the request method is GET, display the comparison form
     return render_template("compare.html", players=players)
-
-
-# ...
-
-# ...
 
 
 # Load player data from CSV file
@@ -483,20 +430,6 @@ def analyze_performance():
         "analysis_result.html",
         prediction=prediction,
         player_image=player1["Image"],
-    )
-
-
-def analyze_player_performance(player, pitch_type, weather, algorithm):
-    if algorithm == "linear":
-        prediction = predict_linear_regression(player, pitch_type, weather)
-    else:
-        prediction = predict_decision_tree(player, pitch_type, weather)
-        return prediction  # Return the prediction dictionary directly
-
-    return render_template(
-        "analysis_result.html",
-        prediction=prediction,
-        player_image=player["Image"],
     )
 
 
@@ -588,6 +521,110 @@ def get_bowling_adjustment(pitch_type, weather):
 
 
 # ---------------important one--------------------------
+
+
+# Initialize the prediction model
+data_folder = "nepal_male_json"
+prediction_model = MatchPredictionModel(data_folder)
+prediction_model.run()
+
+
+# # Route to handle prediction
+# @app.route("/make_prediction", methods=["GET", "POST"])
+# def make_prediction():
+#     if request.method == "POST":
+#         # Retrieve input features from the frontend form
+#         team1 = request.form.get("team1")
+#         team2 = request.form.get("team2")
+#         venue = request.form.get("venue")
+#         overs = request.form.get("overs")
+
+#         # Check if the "overs" input is not empty before converting to int
+#         if overs:
+#             overs = int(overs)
+
+#             # Use the prediction model to predict the winner
+#             new_match_features = [len(team1), len(team2), overs, venue]
+#             predicted_winner = prediction_model.predict_winner(new_match_features)
+
+#             return render_template(
+#                 "prediction_result.html", predicted_winner=predicted_winner
+#             )
+
+#     return render_template("sample_prediction.html")
+
+
+# Route to display sample data
+@app.route("/sample_data")
+def sample_data():
+    # Load match data from the dataset
+    match_data = prediction_model.preprocess_data()
+
+    # Sort the match data by date in descending order to show the latest matches first
+    match_data.sort(key=lambda match: match["info"]["dates"][0], reverse=True)
+
+    # Pagination settings
+    page = request.args.get("page", 1, type=int)
+    matches_per_page = 5
+    start_idx = (page - 1) * matches_per_page
+    end_idx = start_idx + matches_per_page
+
+    paginated_matches = match_data[start_idx:end_idx]
+
+    total_pages = (len(match_data) // matches_per_page) + 1
+
+    return render_template(
+        "sample_data.html",
+        paginated_matches=paginated_matches,
+        page=page,
+        total_pages=total_pages,
+    )
+
+
+@app.route("/match_details/<string:match_id>")
+def match_details(match_id):
+    # Assuming match JSON files are stored in the "nepal_male_json" directory
+    match_path = os.path.join(app.root_path, "nepal_male_json", f"{match_id}.json")
+
+    # Load and parse the match JSON content
+    with open(match_path, "r") as file:
+        match_data = json.load(file)
+
+    return render_template("match_details.html", match_data=match_data)
+
+
+@app.route("/fetch-icc-rankings")
+def fetch_icc_rankings():
+    try:
+        # Make a GET request to the ESPN Cricinfo API
+        response = requests.get(
+            "https://site.web.api.espn.com/apis/v2/sports/cricket/5?contentorigin=espn"
+        )
+        response.raise_for_status()  # Raise an exception for 4xx or 5xx responses
+
+        ranking_data = response.json()
+        return jsonify(ranking_data)
+    except Exception as e:
+        return jsonify(error=str(e)), 500
+
+
+# Render the predictions.html page
+@app.route("/predictions", methods=["GET", "POST"])
+def predictions():
+    if request.method == "POST":
+        # Get the user-input for "teamB"
+        teamB = request.form["teamB"]
+
+        # Set "teamA" to "Nepal" (fixed)
+        teamA = "Nepal"
+
+        # Call the prediction function from prediction_module.py
+        result = prediction_module.predict_match(teamA, teamB)
+
+        return render_template("predictions.html", prediction=result)
+
+    return render_template("predictions.html", prediction=None)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
