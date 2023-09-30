@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Algorithm Comparison</title>
+</head>
+<body>
+    <h1>Algorithm Comparison</h1>
+    <p>Logistic Regression Accuracy: {{ lr_accuracy }}</p>
+    <p>Random Forest Accuracy: {{ rf_accuracy }}</p>
+
+    <!-- Embed the chart as an image -->
+    <img src="data:image/png;base64,{{ chart_data }}" alt="Comparison Chart">
+
+    <a href="/">Back to Home</a>
+</body>
+</html>

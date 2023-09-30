@@ -17,15 +17,24 @@ from sklearn.model_selection import train_test_split
 from playerprofile import get_player_stats
 from werkzeug.utils import secure_filename
 from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import mean_squared_error
+from sklearn.preprocessing import LabelEncoder
+from sklearn.impute import SimpleImputer
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
 import os
 import pickle
 import csv
 import joblib
 import json
 import prediction_module
+import numpy as np  # Import NumPy for data manipulation
 from predict import make_prediction
 from prediction_model import MatchPredictionModel
+
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -349,7 +358,7 @@ def predict():
     # Use the make_prediction function from predict.py
     prediction = make_prediction(opponent, location, toss_winner)
 
-    return render_template("prediction.html", prediction=prediction)
+    return render_template("prediction.html", prediction=prediction, icc_rankings=icc_rankings)
 
 
 # Load player data from CSV file
@@ -523,10 +532,10 @@ def get_bowling_adjustment(pitch_type, weather):
 # ---------------important one--------------------------
 
 
-# Initialize the prediction model
-data_folder = "nepal_male_json"
-prediction_model = MatchPredictionModel(data_folder)
-prediction_model.run()
+# # Initialize the prediction model
+# data_folder = "nepal_male_json"
+# prediction_model = MatchPredictionModel(data_folder)
+# prediction_model.run()
 
 
 # # Route to handle prediction
@@ -593,38 +602,165 @@ def match_details(match_id):
     return render_template("match_details.html", match_data=match_data)
 
 
-@app.route("/fetch-icc-rankings")
-def fetch_icc_rankings():
-    try:
-        # Make a GET request to the ESPN Cricinfo API
-        response = requests.get(
-            "https://site.web.api.espn.com/apis/v2/sports/cricket/5?contentorigin=espn"
-        )
-        response.raise_for_status()  # Raise an exception for 4xx or 5xx responses
 
-        ranking_data = response.json()
-        return jsonify(ranking_data)
-    except Exception as e:
-        return jsonify(error=str(e)), 500
+
+# Load the trained model when the Flask app starts
+model_file = "trained_model.pkl"  # Replace with the actual path to your trained model file
+model = joblib.load(model_file)
+
+# Load venue and pitch condition mappings (ensure these mappings are correctly defined)
+venue_mapping = {
+    "Nepal": [0, 1, 0],  # Example one-hot encoding for Nepal
+    "UAE": [1, 0, 0],    # Example one-hot encoding for UAE
+    # Add more venues and their encodings as needed
+}
+
+pitch_condition_mapping = {
+    "Dry": [0, 1],      # Example one-hot encoding for Dry pitch condition
+    "Wet": [1, 0],      # Example one-hot encoding for Wet pitch condition
+    "Unknown": [0, 0],  # Example one-hot encoding for Unknown pitch condition
+    # Add more pitch conditions and their encodings as needed
+}
+
+# Initialize demo ICC rankings for opposition team strength
+icc_rankings = {
+    "India": 1,
+    "Australia": 2,
+    "England": 3,
+    "Pakistan": 4,
+    "South Africa": 5,
+    # Add more teams and rankings as needed
+}
 
 
 # Render the predictions.html page
-@app.route("/predictions", methods=["GET", "POST"])
-def predictions():
-    if request.method == "POST":
-        # Get the user-input for "teamB"
-        teamB = request.form["teamB"]
+@app.route('/predictions', methods=['GET', 'POST'])
+def make_predictions():
 
-        # Set "teamA" to "Nepal" (fixed)
-        teamA = "Nepal"
+    if request.method == 'POST':
+        # Retrieve data from the form
+        overs = float(request.form['overs'])
+        venue = request.form['venue']
+        opposition = request.form['opposition']
+        pitch_condition = request.form['pitch_condition']
+        bat_or_bowl = request.form['bat_or_bowl']
 
-        # Call the prediction function from prediction_module.py
-        result = prediction_module.predict_match(teamA, teamB)
+        # Calculate opposition team strength based on ICC rankings
+        opposition_strength = icc_rankings.get(opposition, 0)
 
-        return render_template("predictions.html", prediction=result)
+        # Ensure 'unique_venues' is available here (assuming 'prediction_model' is an instance of MatchPredictionModel)
+        unique_venues = []  # Replace with the actual variable name
 
-    return render_template("predictions.html", prediction=None)
+        # Prepare the input data for prediction
+        venue_feature = venue_mapping.get(venue, [0, 0, 0])  # Use venue_mapping
+        pitch_condition_feature = pitch_condition_mapping.get(pitch_condition, [0, 0])  # Use pitch_condition_mapping
+
+        # Define missing features with default values (you may adjust these)
+        missing_features = [0.0, 0.0]  # Default values for missing features
+
+        # Combine the features into an input array
+        input_data = np.array([overs] + venue_feature + pitch_condition_feature + [opposition_strength, 0.0])
 
 
+        # Make predictions using the model
+        prediction = model.predict([input_data])[0]
+
+
+        if bat_or_bowl == 'bat':
+         # Round the prediction value to the nearest whole number
+         rounded_prediction = round(prediction)
+         # Define a range (you can adjust this range as needed)
+         prediction_range = f"{rounded_prediction - 10} to {rounded_prediction + 10} runs"
+         prediction_label = 'runs'
+    else:
+        # Similar logic for wickets
+        rounded_prediction = round(prediction)
+        prediction_range = f"{rounded_prediction - 2} to {rounded_prediction + 2} wickets"
+        prediction_label = 'wickets'
+
+        return render_template('predictions.html', prediction=prediction_range, bat_or_bowl=bat_or_bowl)
+
+    # Handle GET request (initial form display)
+    return render_template('predictions.html', prediction=None)
+
+# # Split the data into training and testing sets for the batting random forest classifier
+# X_train_rf_batting, X_test_rf_batting, y_train_rf_batting, y_test_rf_batting = train_test_split(
+#     X, y_batting, test_size=0.2, random_state=42
+# )
+
+# # Build and train the batting random forest classifier
+# rf_classifier_batting = RandomForestClassifier(random_state=42)
+# rf_classifier_batting.fit(X_train_rf_batting, y_train_rf_batting)
+
+# # Split the data into training and testing sets for the bowling random forest classifier
+# X_train_rf_bowling, X_test_rf_bowling, y_train_rf_bowling, y_test_rf_bowling = train_test_split(
+#     X, y_bowling, test_size=0.2, random_state=42
+# )
+
+# # Build and train the bowling random forest classifier
+# rf_classifier_bowling = RandomForestClassifier(random_state=42)
+# rf_classifier_bowling.fit(X_train_rf_bowling, y_train_rf_bowling)
+
+# # # Train a single Random Forest Classifier
+# # rf_classifier = RandomForestClassifier(random_state=42)
+# # # Train the random forest classifier using the batting dataset
+# # rf_classifier.fit(X_train_rf_batting, y_train_rf_batting)
+
+# # # Evaluate Random Forest for batting
+# # rf_accuracy_batting = rf_classifier_batting.score(X_test_rf_batting, y_test_rf_batting)
+# # # Evaluate Random Forest for bowling
+# # rf_accuracy_bowling = rf_classifier_bowling.score(X_test_rf_bowling, y_test_rf_bowling)
+
+# from sklearn.datasets import load_iris
+
+# # Load the Iris dataset as an example
+# iris = load_iris()
+# X = iris.data  # Feature matrix
+# y = iris.target  # Target variable
+
+# # Split your data into training and testing sets
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# # Create a logistic regression classifier
+# lr_classifier = LogisticRegression(random_state=42)
+
+# # Train the logistic regression classifier
+# lr_classifier.fit(X_train, y_train)  # You should replace X_train and y_train with your actual training data
+
+# # Evaluate Logistic Regression
+# lr_accuracy = lr_classifier.score(X_test, y_test)  # Calculate accuracy on the test data
+
+# # Evaluate Random Forest
+# rf_accuracy = rf_classifier.score(X_test, y_test)
+
+# # Define a route to display the comparison results
+# @app.route('/comparison')
+# def show_comparison():
+#     global lr_accuracy, rf_accuracy, comparison_chart
+
+#     # Ensure that both algorithms have been run
+#     if lr_accuracy is not None and rf_accuracy is not None:
+#         # Create a bar chart
+#         labels = ['Logistic Regression', 'Random Forest']
+#         accuracies = [lr_accuracy, rf_accuracy]
+
+#         plt.bar(labels, accuracies)
+#         plt.ylabel('Accuracy')
+#         plt.title('Comparison of Algorithms')
+#         plt.ylim([0, 1])
+
+#         # Convert the chart to a base64-encoded image for embedding in HTML
+#         buffer = BytesIO()
+#         plt.savefig(buffer, format='png')
+#         buffer.seek(0)
+#         chart_data = base64.b64encode(buffer.read()).decode()
+#         buffer.close()
+
+#         # Pass the results and chart data to the HTML template
+#         return render_template('comparison.html', lr_accuracy=lr_accuracy, rf_accuracy=rf_accuracy, chart_data=chart_data)
+#     else:
+#         return "Please run both algorithms first."
+
+
+# Run the Flask app
 if __name__ == "__main__":
     app.run(debug=True)

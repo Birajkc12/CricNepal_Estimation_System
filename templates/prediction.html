@@ -10,7 +10,34 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='styles.css') }}"
     />
-    <style></style>
+    <style>
+      /* Add custom styles for the loading animation and result container */
+      .loading-container {
+        text-align: center;
+        display: none;
+      }
+      .loading-animation {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid #007bff;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 2s linear infinite;
+        margin: 0 auto;
+        margin-top: 20px;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .result-container {
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg">
@@ -70,16 +97,10 @@
           >
         </h2>
         <div class="section-content">
-          <form action="/predict" method="post">
+          <form id="prediction-form">
             <div class="form-group">
               <label for="opponent">Opponent:</label>
-              <input
-                type="text"
-                id="opponent"
-                name="opponent"
-                class="form-control"
-                required
-              />
+              <input type="text" id="opponent" name="opponent" class="form-control" required />
             </div>
             <div class="form-group">
               <label for="location">Location:</label>
@@ -101,17 +122,61 @@
                 required
               />
             </div>
-            <button type="submit" class="btn btn-primary">Predict</button>
+            <button type="submit" class="btn btn-primary" id="predict-button">Predict</button>
           </form>
         </div>
-        {% if prediction %}
-        <div class="section-content prediction-result">
+        <div class="loading-container">
+          <div class="loading-animation"></div>
+          <p>Utilizing algorithm, predicting...</p>
+        </div>
+        <div class="result-container">
           <h3>Prediction Result:</h3>
           <p>{{ prediction }}</p>
+          <p id="prediction-result"></p>
         </div>
-        {% endif %}
       </div>
     </section>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const loadingContainer = document.querySelector('.loading-container');
+        const resultContainer = document.querySelector('.result-container');
+        const predictionResult = document.getElementById('prediction-result');
+        const predictionForm = document.getElementById('prediction-form');
+        const predictButton = document.getElementById('predict-button');
+
+        // Add an event listener for the form submission
+        predictionForm.addEventListener('submit', function(event) {
+          event.preventDefault(); // Prevent the default form submission
+          loadingContainer.style.display = 'block'; // Show the loading container
+          predictButton.disabled = true; // Disable the Predict button while loading
+
+          // Simulate a delay (adjust the timeout duration as needed)
+          setTimeout(function() {
+            // Make an AJAX request to your prediction endpoint
+            // Replace this with your actual prediction request
+            fetch('/predict', {
+              method: 'POST',
+              body: new FormData(predictionForm), // Send the form data
+            })
+              .then(response => response.text())
+              .then(data => {
+                // Display the prediction result and hide the loading animation
+                predictionResult.textContent = data;
+                resultContainer.style.display = 'block';
+                loadingContainer.style.display = 'none';
+              })
+              .catch(error => {
+                console.error('Prediction request error:', error);
+                // Handle any errors here, e.g., show an error message to the user
+              })
+              .finally(() => {
+                predictButton.disabled = false; // Re-enable the Predict button
+              });
+          }, 12000); // Adjust the delay time (in milliseconds) as needed
+        });
+      });
+    </script>
   </body>
 </html>

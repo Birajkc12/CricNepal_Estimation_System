@@ -1,28 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Match Prediction</title>
-  </head>
-  <body>
-    <h1>Cricket Match Prediction</h1>
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Match Predictions</title>
+</head>
+<body>
+    <h1>Cricket Match Predictions</h1>
     <form method="POST" action="/predictions">
-      <label for="teamB">Opposing Team:</label>
-      <input type="text" id="teamB" name="teamB" required />
-      <br />
-      <!-- "teamA" is fixed to "Nepal" -->
-      <input type="hidden" id="teamA" name="teamA" value="Nepal" />
-      <br />
-      <input type="submit" value="Predict" />
+        <label for="overs">Overs:</label>
+        <input type="number" id="overs" name="overs" step="0.1" required><br><br>
+
+        <label for="venue">Venue:</label>
+        <select id="venue" name="venue" required>
+            <option value="Nepal">Nepal</option>
+            <option value="UAE">UAE</option>
+            <!-- Add more venues as needed -->
+        </select><br><br>
+
+        <label for="opposition">Opposition:</label>
+        <input type="text" id="opposition" name="opposition" required><br><br>
+
+        <label for="pitch_condition">Pitch Condition:</label>
+        <select id="pitch_condition" name="pitch_condition" required>
+            <option value="Dry">Dry</option>
+            <option value="Wet">Wet</option>
+            <option value="Unknown">Unknown</option>
+            <!-- Add more pitch conditions as needed -->
+        </select><br><br>
+
+        <label for="bat_or_bowl">Nepal to:</label>
+        <select id="bat_or_bowl" name="bat_or_bowl" required>
+            <option value="bat">Bat First</option>
+            <option value="bowl">Bowl First</option>
+        </select><br><br>
+
+        <input type="submit" value="Predict">
     </form>
 
     {% if prediction %}
-    <h2>Prediction Result:</h2>
-    <p>{{ prediction }}</p>
+    <h2>Prediction:</h2>
+    {% if bat_or_bowl == 'bat' %}
+        <p>If Nepal bats first, they are expected to score approximately {{ prediction }} runs.</p>
+    {% else %}
+        <p>If Nepal bowls first, they are expected to win by approximately {{ -prediction }} wickets.</p>
     {% endif %}
+    <p>Other factors: (Display other relevant factors here)</p>
+{% endif %}
 
-    <a href="/">Back to Home</a>
-  </body>
+</body>
 </html>
