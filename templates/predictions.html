@@ -1,52 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cricket Match Predictions</title>
+    <title>Cricket Match Prediction Results</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>Cricket Match Predictions</h1>
-    <form method="POST" action="/predictions">
-        <label for="overs">Overs:</label>
-        <input type="number" id="overs" name="overs" step="0.1" required><br><br>
+    <h1>Cricket Match Prediction Results</h1>
+        <img src="data:image/png;base64,{{ graph_image }}" alt="Algorithm Comparison Graph">
+    
+    <div style="width: 80%;">
+        <canvas id="prediction-chart"></canvas>
+    </div>
+    
+  
+    <h2>Predictions</h2>
+    <p>Random Forest Predictions: {{ prediction }}</p>
 
-        <label for="venue">Venue:</label>
-        <select id="venue" name="venue" required>
-            <option value="Nepal">Nepal</option>
-            <option value="UAE">UAE</option>
-            <!-- Add more venues as needed -->
-        </select><br><br>
+    <script>
+        // MSE chart data
+        var mseData = {{ mse_scores | tojson }};
+        var algorithmNames = {{ algorithm_names | tojson }};
 
-        <label for="opposition">Opposition:</label>
-        <input type="text" id="opposition" name="opposition" required><br><br>
-
-        <label for="pitch_condition">Pitch Condition:</label>
-        <select id="pitch_condition" name="pitch_condition" required>
-            <option value="Dry">Dry</option>
-            <option value="Wet">Wet</option>
-            <option value="Unknown">Unknown</option>
-            <!-- Add more pitch conditions as needed -->
-        </select><br><br>
-
-        <label for="bat_or_bowl">Nepal to:</label>
-        <select id="bat_or_bowl" name="bat_or_bowl" required>
-            <option value="bat">Bat First</option>
-            <option value="bowl">Bowl First</option>
-        </select><br><br>
-
-        <input type="submit" value="Predict">
-    </form>
-
-    {% if prediction %}
-    <h2>Prediction:</h2>
-    {% if bat_or_bowl == 'bat' %}
-        <p>If Nepal bats first, they are expected to score approximately {{ prediction }} runs.</p>
-    {% else %}
-        <p>If Nepal bowls first, they are expected to win by approximately {{ -prediction }} wickets.</p>
-    {% endif %}
-    <p>Other factors: (Display other relevant factors here)</p>
-{% endif %}
-
+        // Create MSE chart
+        var ctx = document.getElementById('mse-chart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'horizontalBar',
+            data: {
+                labels: algorithmNames,
+                datasets: [{
+                    label: 'Mean Squared Error',
+                    data: mseData,
+                    backgroundColor: 'skyblue',
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+    <script>
+        // Prediction chart data (replace with your data)
+        var predictionData = {{ prediction | tojson }};
+    
+        // Create prediction chart
+        var ctxPrediction = document.getElementById('prediction-chart').getContext('2d');
+        var chartPrediction = new Chart(ctxPrediction, {
+            type: 'bar',
+            data: {
+                labels: ['Label 1', 'Label 2', 'Label 3'],  // Replace with your labels
+                datasets: [{
+                    label: 'Predictions',
+                    data: predictionData,
+                    backgroundColor: 'lightgreen',
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>

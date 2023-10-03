@@ -226,5 +226,3 @@ def make_prediction(opponent, location, toss_winner):
         total_runs_mean + total_runs_std * range_multiplier + opponent_factor
     )
     return f"Result: {prediction}, Estimated range of total runs: {range_low} - {range_high}"
-
-

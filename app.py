@@ -358,7 +358,9 @@ def predict():
     # Use the make_prediction function from predict.py
     prediction = make_prediction(opponent, location, toss_winner)
 
-    return render_template("prediction.html", prediction=prediction, icc_rankings=icc_rankings)
+    return jsonify({"prediction": prediction})
+
+    # return render_template("prediction.html", prediction=prediction, icc_rankings=icc_rankings)
 
 
 # Load player data from CSV file
@@ -569,7 +571,7 @@ def sample_data():
     # Load match data from the dataset
     match_data = prediction_model.preprocess_data()
 
-    # Sort the match data by date in descending order to show the latest matches first
+    # Sort the match data by date in descending order to show the latest matches first  
     match_data.sort(key=lambda match: match["info"]["dates"][0], reverse=True)
 
     # Pagination settings
@@ -633,55 +635,55 @@ icc_rankings = {
 }
 
 
-# Render the predictions.html page
-@app.route('/predictions', methods=['GET', 'POST'])
-def make_predictions():
+# # Render the predictions.html page
+# @app.route('/predictions', methods=['GET', 'POST'])
+# def make_predictions():
 
-    if request.method == 'POST':
-        # Retrieve data from the form
-        overs = float(request.form['overs'])
-        venue = request.form['venue']
-        opposition = request.form['opposition']
-        pitch_condition = request.form['pitch_condition']
-        bat_or_bowl = request.form['bat_or_bowl']
+#     if request.method == 'POST':
+#         # Retrieve data from the form
+#         overs = float(request.form['overs'])
+#         venue = request.form['venue']
+#         opposition = request.form['opposition']
+#         pitch_condition = request.form['pitch_condition']
+#         bat_or_bowl = request.form['bat_or_bowl']
 
-        # Calculate opposition team strength based on ICC rankings
-        opposition_strength = icc_rankings.get(opposition, 0)
+#         # Calculate opposition team strength based on ICC rankings
+#         opposition_strength = icc_rankings.get(opposition, 0)
 
-        # Ensure 'unique_venues' is available here (assuming 'prediction_model' is an instance of MatchPredictionModel)
-        unique_venues = []  # Replace with the actual variable name
+#         # Ensure 'unique_venues' is available here (assuming 'prediction_model' is an instance of MatchPredictionModel)
+#         unique_venues = []  # Replace with the actual variable name
 
-        # Prepare the input data for prediction
-        venue_feature = venue_mapping.get(venue, [0, 0, 0])  # Use venue_mapping
-        pitch_condition_feature = pitch_condition_mapping.get(pitch_condition, [0, 0])  # Use pitch_condition_mapping
+#         # Prepare the input data for prediction
+#         venue_feature = venue_mapping.get(venue, [0, 0, 0])  # Use venue_mapping
+#         pitch_condition_feature = pitch_condition_mapping.get(pitch_condition, [0, 0])  # Use pitch_condition_mapping
 
-        # Define missing features with default values (you may adjust these)
-        missing_features = [0.0, 0.0]  # Default values for missing features
+#         # Define missing features with default values (you may adjust these)
+#         missing_features = [0.0, 0.0]  # Default values for missing features
 
-        # Combine the features into an input array
-        input_data = np.array([overs] + venue_feature + pitch_condition_feature + [opposition_strength, 0.0])
-
-
-        # Make predictions using the model
-        prediction = model.predict([input_data])[0]
+#         # Combine the features into an input array
+#         input_data = np.array([overs] + venue_feature + pitch_condition_feature + [opposition_strength, 0.0])
 
 
-        if bat_or_bowl == 'bat':
-         # Round the prediction value to the nearest whole number
-         rounded_prediction = round(prediction)
-         # Define a range (you can adjust this range as needed)
-         prediction_range = f"{rounded_prediction - 10} to {rounded_prediction + 10} runs"
-         prediction_label = 'runs'
-    else:
-        # Similar logic for wickets
-        rounded_prediction = round(prediction)
-        prediction_range = f"{rounded_prediction - 2} to {rounded_prediction + 2} wickets"
-        prediction_label = 'wickets'
+#         # Make predictions using the model
+#         prediction = model.predict([input_data])[0]
 
-        return render_template('predictions.html', prediction=prediction_range, bat_or_bowl=bat_or_bowl)
+
+#         if bat_or_bowl == 'bat':
+#          # Round the prediction value to the nearest whole number
+#          rounded_prediction = round(prediction)
+#          # Define a range (you can adjust this range as needed)
+#          prediction_range = f"{rounded_prediction - 10} to {rounded_prediction + 10} runs"
+#          prediction_label = 'runs'
+#     else:
+#         # Similar logic for wickets
+#         rounded_prediction = round(prediction)
+#         prediction_range = f"{rounded_prediction - 2} to {rounded_prediction + 2} wickets"
+#         prediction_label = 'wickets'
+
+        # return render_template('predictions.html', prediction=prediction_range, bat_or_bowl=bat_or_bowl)
 
     # Handle GET request (initial form display)
-    return render_template('predictions.html', prediction=None)
+    # return render_template('predictions.html', prediction=None)
 
 # # Split the data into training and testing sets for the batting random forest classifier
 # X_train_rf_batting, X_test_rf_batting, y_train_rf_batting, y_test_rf_batting = train_test_split(
@@ -759,6 +761,106 @@ def make_predictions():
 #         return render_template('comparison.html', lr_accuracy=lr_accuracy, rf_accuracy=rf_accuracy, chart_data=chart_data)
 #     else:
 #         return "Please run both algorithms first."
+
+
+# Final predictions 
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.svm import SVR
+from xgboost import XGBRegressor
+from sklearn.metrics import mean_squared_error
+import matplotlib.pyplot as plt
+from sklearn.impute import SimpleImputer
+from flask import Flask, render_template 
+
+# Load and preprocess your dataset
+file_paths = [
+    "Dataset/1358073.csv", "Dataset/1358075.csv", "Dataset/1358076.csv", "Dataset/1358078.csv",
+    "Dataset/1358083.csv", "Dataset/1358084.csv", "Dataset/1358087.csv", "Dataset/1358089.csv",
+    "Dataset/1358092.csv", "Dataset/1367985.csv", "Dataset/1368002.csv", "Dataset/1377746.csv",
+    "Dataset/1377751.csv", "Dataset/1377754.csv", "Dataset/1377759.csv", "Dataset/1377771.csv",
+    "Dataset/1377774.csv", "Dataset/1388392.csv", "Dataset/1388398.csv"
+]  # Update with your dataset file paths
+dfs = [pd.read_csv(file_path) for file_path in file_paths]
+merged_df = pd.concat(dfs)
+
+# Data Preprocessing
+merged_df = merged_df.drop(columns=['match_id', 'player_dismissed', 'other_wicket_type', 'other_player_dismissed', 'season', 'start_date'])  # Drop 'season' and 'start_date'
+
+label_encoder = LabelEncoder()
+merged_df['venue'] = label_encoder.fit_transform(merged_df['venue'])
+merged_df['batting_team'] = label_encoder.fit_transform(merged_df['batting_team'])
+merged_df['bowling_team'] = label_encoder.fit_transform(merged_df['bowling_team'])
+merged_df['striker'] = label_encoder.fit_transform(merged_df['striker'])
+merged_df['non_striker'] = label_encoder.fit_transform(merged_df['non_striker'])
+merged_df['bowler'] = label_encoder.fit_transform(merged_df['bowler'])
+merged_df['wicket_type'] = label_encoder.fit_transform(merged_df['wicket_type'])
+
+X = merged_df.drop(columns=['runs_off_bat'])
+y = merged_df['runs_off_bat']
+
+@app.route('/predictions')
+def predictions():
+
+    # Initialize the imputer
+    imputer = SimpleImputer(strategy='mean')
+
+    # Fit and transform the imputer on your features
+    X_imputed = imputer.fit_transform(X)
+
+    # Split the data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X_imputed, y, test_size=0.2, random_state=42)
+
+    # Train and evaluate models
+    rf_model = RandomForestRegressor(random_state=42)
+    rf_model.fit(X_train, y_train)
+    y_pred_rf = rf_model.predict(X_test)
+    mse_rf = mean_squared_error(y_test, y_pred_rf)
+
+    dt_model = DecisionTreeRegressor(random_state=42)
+    dt_model.fit(X_train, y_train)
+    y_pred_dt = dt_model.predict(X_test)
+    mse_dt = mean_squared_error(y_test, y_pred_dt)
+
+    svm_model = SVR()
+    svm_model.fit(X_train, y_train)
+    y_pred_svm = svm_model.predict(X_test)
+    mse_svm = mean_squared_error(y_test, y_pred_svm)
+
+    xgboost_model = XGBRegressor(random_state=42)
+    xgboost_model.fit(X_train, y_train)
+    y_pred_xgboost = xgboost_model.predict(X_test)
+    mse_xgboost = mean_squared_error(y_test, y_pred_xgboost)
+
+    # Calculate the prediction using the Random Forest model
+    prediction = y_pred_rf  # Use Random Forest predictions here
+
+    # Calculate the prediction using the Random Forest model
+    prediction = y_pred_rf.tolist()  # Convert NumPy array to list
+
+    # Create an accuracy graph
+    algorithm_names = ['Random Forest', 'Decision Tree', 'Support Vector Machine', 'XGBoost']
+    mse_scores = [mse_rf, mse_dt, mse_svm, mse_xgboost]
+
+
+    plt.figure(figsize=(10, 6))
+    plt.barh(algorithm_names, mse_scores, color='skyblue')
+    plt.xlabel('Mean Squared Error')
+    plt.title('Algorithm Comparison')   
+    plt.gca().invert_yaxis()
+
+    # Save the graph as a PNG image and convert it to base64
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    graph_image = base64.b64encode(buffer.read()).decode('utf-8')
+    buffer.close()
+
+    # Render the HTML template with the graph
+    return render_template('predictions.html', mse_scores=mse_scores, algorithm_names=algorithm_names, prediction=prediction, graph_image=graph_image)
 
 
 # Run the Flask app

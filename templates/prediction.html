@@ -129,54 +129,51 @@
           <div class="loading-animation"></div>
           <p>Utilizing algorithm, predicting...</p>
         </div>
-        <div class="result-container">
-          <h3>Prediction Result:</h3>
-          <p>{{ prediction }}</p>
-          <p id="prediction-result"></p>
-        </div>
+       
+<div class="result-container">
+  <h3>Prediction Result:</h3>
+  <p id="prediction-result"></p>
+</div>
       </div>
     </section>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadingContainer = document.querySelector('.loading-container');
-        const resultContainer = document.querySelector('.result-container');
-        const predictionResult = document.getElementById('prediction-result');
-        const predictionForm = document.getElementById('prediction-form');
-        const predictButton = document.getElementById('predict-button');
-
-        // Add an event listener for the form submission
-        predictionForm.addEventListener('submit', function(event) {
+   
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const loadingContainer = document.querySelector('.loading-container');
+      const resultContainer = document.querySelector('.result-container');
+      const predictionResult = document.getElementById('prediction-result');
+      const predictionForm = document.getElementById('prediction-form');
+      const predictButton = document.getElementById('predict-button');
+  
+      // Add an event listener for the form submission
+      predictionForm.addEventListener('submit', function(event) {
           event.preventDefault(); // Prevent the default form submission
           loadingContainer.style.display = 'block'; // Show the loading container
           predictButton.disabled = true; // Disable the Predict button while loading
-
-          // Simulate a delay (adjust the timeout duration as needed)
-          setTimeout(function() {
-            // Make an AJAX request to your prediction endpoint
-            // Replace this with your actual prediction request
-            fetch('/predict', {
+  
+          // Make an AJAX request to your prediction endpoint
+          fetch('/predict', {
               method: 'POST',
               body: new FormData(predictionForm), // Send the form data
-            })
-              .then(response => response.text())
-              .then(data => {
-                // Display the prediction result and hide the loading animation
-                predictionResult.textContent = "";
-                resultContainer.style.display = 'block';
-                loadingContainer.style.display = 'none';
-              })
-              .catch(error => {
-                console.error('Prediction request error:', error);
-                // Handle any errors here, e.g., show an error message to the user
-              })
-              .finally(() => {
-                predictButton.disabled = false; // Re-enable the Predict button
-              });
-          }, 12000); // Adjust the delay time (in milliseconds) as needed
-        });
+          })
+          .then(response => response.json()) // Parse the response as JSON
+          .then(data => {
+              // Display the prediction result and hide the loading animation
+              predictionResult.textContent = data.prediction;
+              resultContainer.style.display = 'block';
+              loadingContainer.style.display = 'none';
+          })
+          .catch(error => {
+              console.error('Prediction request error:', error);
+              // Handle any errors here, e.g., show an error message to the user
+          })
+          .finally(() => {
+              predictButton.disabled = false; // Re-enable the Predict button
+          });
       });
-    </script>
+  });
+  </script>
   </body>
 </html>
